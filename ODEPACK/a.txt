@@ -1,0 +1,28 @@
+Microsoft (R) COFF/PE Dumper Version 14.28.29337.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file OdePack.dll
+
+File Type: DLL
+
+  Image has the following dependencies:
+
+    libifcoremd.dll
+    libmmd.dll
+    KERNEL32.dll
+    VCRUNTIME140.dll
+    api-ms-win-crt-runtime-l1-1-0.dll
+    api-ms-win-crt-environment-l1-1-0.dll
+    api-ms-win-crt-stdio-l1-1-0.dll
+    api-ms-win-crt-string-l1-1-0.dll
+
+  Summary
+
+        3000 .data
+        2000 .pdata
+        B000 .rdata
+        1000 .reloc
+        1000 .rsrc
+       7B000 .text
+        2000 _RDATA
