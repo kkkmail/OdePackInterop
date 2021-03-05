@@ -38,7 +38,6 @@ C***FIRST EXECUTABLE STATEMENT  DUMACH
 C----------------------- End of Function DUMACH ------------------------
       END
 
-      !DEC$ ATTRIBUTES DLLEXPORT::DUMSUM
       SUBROUTINE DUMSUM(A,B,C)
 C     Routine to force normal storing of A + B, for DUMACH.
       DOUBLE PRECISION A, B, C

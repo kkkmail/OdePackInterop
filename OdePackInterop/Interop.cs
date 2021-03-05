@@ -38,7 +38,8 @@ namespace OdePackInterop
             [In, Out] double[][] pd,
             ref int nrowpd);
 
-        [DllImport("OdePack.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "DLSODE")]
+        //[DllImport("OdePack.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "DLSODE")]
+        [DllImport("OdePack.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "DLSODEINTEROP")]
         public static unsafe extern void DLSODE(
             F f,
             ref int neq,
