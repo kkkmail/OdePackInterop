@@ -11,16 +11,6 @@ namespace OdePackInterop
     /// </summary>
     public static class Interop
     {
-        [DllImport("OdePack.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "DUMSUM")]
-        public static unsafe extern void DUMSUM(ref double a, ref double b, ref double c);
-
-        //[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        //public delegate void F(
-        //    ref int neq,
-        //    ref double t,
-        //    [In, Out] double[] y,
-        //    [In, Out] double[] ydot);
-
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public unsafe delegate void F(
             ref int neq,
@@ -28,17 +18,19 @@ namespace OdePackInterop
             double* y,
             double* ydot);
 
+        /// <summary>
+        /// !!! DO NOT USE AS JACOBIAN IS EXPLICITLY NOT SUPPORTED !!!
+        /// </summary>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public unsafe delegate void JAC(
             ref int neq,
             ref double t,
-            [In, Out] double[] y,
+            double* y,
             ref int ml,
             ref int mu,
-            [In, Out] double[][] pd,
+            double** pd,
             ref int nrowpd);
 
-        //[DllImport("OdePack.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "DLSODE")]
         [DllImport("OdePack.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "DLSODEINTEROP")]
         public static unsafe extern void DLSODE(
             F f,

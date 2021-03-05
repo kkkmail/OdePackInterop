@@ -34,10 +34,10 @@ namespace OdePackInteropTest
         static unsafe void JacImpl(
             ref int neq,
             ref double t,
-            [In, Out] double[] y,
+            double* y,
             ref int ml,
             ref int mu,
-            [In, Out] double[][] pd,
+            double** pd,
             ref int nrowpd)
         {
             throw new NotSupportedException("Using Jacobian is not supoprted yet.");
