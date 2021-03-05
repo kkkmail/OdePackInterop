@@ -9,17 +9,6 @@ namespace OdePackInteropTest
         const double fwdCoeff = 0.1;
         const double bkwCoeff = 0.1;
 
-        //static void FImpl(
-        //    ref int neq,
-        //    ref double t,
-        //    [In, Out] double[] y,
-        //    [In, Out] double[] ydot)
-        //{
-        //    ydot[0] = -fwdCoeff * y[0] + bkwCoeff * ydot[1] * ydot[2];
-        //    ydot[1] = fwdCoeff * y[0] - bkwCoeff * ydot[1] * ydot[2];
-        //    ydot[2] = fwdCoeff * y[0] - bkwCoeff * ydot[1] * ydot[2];
-        //}
-
         static unsafe void FImpl(
             ref int neq,
             ref double t,
