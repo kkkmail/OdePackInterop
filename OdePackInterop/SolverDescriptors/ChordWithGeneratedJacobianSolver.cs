@@ -3,12 +3,12 @@
 // ReSharper disable ArgumentsStyleAnonymousFunction
 namespace OdePackInterop.SolverDescriptors
 {
-    public record ChordWithUserJacobianSolver : SolverDescriptorBase
+    public record ChordWithGeneratedJacobianSolver : SolverDescriptorBase
     {
-        public ChordWithUserJacobianSolver(
+        public ChordWithGeneratedJacobianSolver(
             int numberOfEquations,
             SolutionMethod solutionMethod)
-            : base(numberOfEquations, solutionMethod, CorrectorIteratorMethod.ChordWithUserJacobian)
+            : base(numberOfEquations, solutionMethod, CorrectorIteratorMethod.ChordWithGeneratedJacobian)
         {
         }
 

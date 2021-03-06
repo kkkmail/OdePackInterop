@@ -8,17 +8,18 @@ namespace OdePackInterop.SolverDescriptors
         public abstract int LIW { get; }
 
         public int NumberOfEquations { get; }
-        public MethodFlag MethodFlag { get; }
+        public SolutionMethod SolutionMethod { get; }
         public CorrectorIteratorMethod IteratorMethod { get; }
+        public int MethodFlag => SolutionMethod.Key * 10 + IteratorMethod.Key;
 
         protected SolverDescriptorBase(
             int numberOfEquations,
-            MethodFlag methodFlag,
+            SolutionMethod solutionMethod,
             CorrectorIteratorMethod iteratorMethod
             )
         {
             NumberOfEquations = numberOfEquations;
-            MethodFlag = methodFlag;
+            SolutionMethod = solutionMethod;
             IteratorMethod = iteratorMethod;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 #nullable enable
 
@@ -22,5 +23,9 @@ namespace OdePackInterop.Sets
 
         public int CompareTo(T? other) => Value?.CompareTo(other) ?? (other == null ? 0 : 1);
         public bool Equals(T? other) => other != null && EqualityComparer<TV>.Default.Equals(Value, other.Value);
+        public override string ToString() => $"{Value}";
+
+        public static InvalidDataException ToInvalidDataException(SetBase<T, TV> value) =>
+            new($"Invalid {typeof(T)}: '{value}'.");
     }
 }

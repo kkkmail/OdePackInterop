@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
 
 namespace OdePackInterop.Sets
 {
-    public record MethodFlag : ClosedDualSetBase<MethodFlag, int, string>
+    public record SolutionMethod : ClosedDualSetBase<SolutionMethod, int, string>
     {
-        private MethodFlag(int key, [CallerMemberName] string? value = null) : base(key, value!)
+        private SolutionMethod(int key, [CallerMemberName] string? value = null) : base(key, value!)
         {
         }
 
-        public static MethodFlag Adams { get; } = new(1);
-        public static MethodFlag Bdf { get; } = new(2);
+        public static SolutionMethod Adams { get; } = new(1);
+        public static SolutionMethod Bdf { get; } = new(2);
     }
 }

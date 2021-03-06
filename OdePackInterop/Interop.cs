@@ -17,7 +17,7 @@ namespace OdePackInterop
             double* ydot);
 
         /// <summary>
-        /// !!! DO NOT USE AS JACOBIAN IS EXPLICITLY NOT SUPPORTED !!!
+        /// !!! DO NOT USE AS JACOBIAN IS NOT SUPPORTED YET !!!
         /// </summary>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public unsafe delegate void JAC(
