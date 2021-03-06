@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using OdePackInterop;
 using OdePackInterop.Sets;
@@ -112,7 +113,18 @@ namespace OdePackInteropTest
             Console.WriteLine("Calling DLSODE...");
 
             var solverParam = new SolverParams(
-                new ChordWithDiagonalJacobianSolver(3, SolutionMethod.Bdf),
+                // MF = 23, No. steps = 53, No. f-s = 75, No. J-s = 13, Elapsed: 00:00:00.0239851
+                //new ChordWithDiagonalJacobianSolver(3, SolutionMethod.Bdf),
+
+                //
+                new ChordWithDiagonalJacobianSolver(3, SolutionMethod.Adams),
+
+                // MF = 10, No. steps = 331076, No. f-s = 606038, No. J-s = 0, Elapsed: 00:00:00.0875339
+                //new FunctionalSolver(3, SolutionMethod.Adams),
+
+                // MF = 20, No. steps = 336412, No. f-s = 616700, No. J-s = 0, Elapsed: 00:00:00.0884548
+                //new FunctionalSolver(3, SolutionMethod.Bdf),
+
                 new[]
                 {
                     1.0,
@@ -121,13 +133,20 @@ namespace OdePackInteropTest
                 })
             {
                 StartTime = 0.0,
-                EndTime = 10.0,
+                EndTime = 1.0e06,
             };
+
+            var sw = new Stopwatch();
+            sw.Start();
 
             unsafe
             {
                 OdeSolver.Run(solverParam, FImpl);
             }
+
+            var elapsed = sw.Elapsed;
+            Console.WriteLine($"Elapsed: {elapsed}");
+            Console.ReadLine();
         }
     }
 }

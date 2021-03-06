@@ -39,6 +39,8 @@ namespace OdePackInterop
                     $"Expected length of absolute tolerance = {descriptor.NumberOfEquations} but got {solverParams.AbsoluteTolerance.Length}.");
             }
 
+            Console.WriteLine($"Using MF = {descriptor.MethodFlag}");
+
             var neq = descriptor.NumberOfEquations;
             var y = solverParams.InitialValues.Select(e => e).ToArray();
             var t = solverParams.StartTime;
@@ -48,13 +50,20 @@ namespace OdePackInterop
             var atol = solverParams.AbsoluteTolerance.Select(e => e).ToArray();
             var itask = 1;
             var istate = 1;
-            var iopt = 0;
+
+            // Tell DLSODE that some optional parameters will be passed.
+            var iopt = 1;
+
             var mf = descriptor.MethodFlag;
             var lrw = descriptor.LRW;
             var liw = descriptor.LIW;
 
             var iwork = new int[liw];
             var rwork = new double[lrw];
+
+            // Make the number of internal steps nearly infinite.
+            // You are responsible for terminating the solver if it runs forever.
+            iwork[5] = Int32.MaxValue;
 
             unsafe
             {
@@ -88,7 +97,6 @@ namespace OdePackInterop
 
                 Console.WriteLine($"At t = {t}, y[0] = {y[0]}, y[1] = {y[1]}, y[2] = {y[2]}");
                 Console.WriteLine($"No. steps = {iwork[10]}, No. f-s = {iwork[11]}, No. J-s = {iwork[12]}");
-                Console.ReadLine();
             }
         }
     }
