@@ -14,7 +14,7 @@ namespace OdePackInterop
             ref int neq,
             ref double t,
             double* y,
-            double* ydot);
+            double* yDot);
 
         /// <summary>
         /// !!! DO NOT USE AS JACOBIAN IS NOT SUPPORTED YET !!!
@@ -30,7 +30,7 @@ namespace OdePackInterop
             ref int nrowpd);
 
         [DllImport("OdePack.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "DLSODEINTEROP")]
-        public static unsafe extern void DLSODE(
+        public static extern unsafe void DLSODE(
             F f,
             ref int neq,
             [In, Out] double[] y,
