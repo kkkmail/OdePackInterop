@@ -111,25 +111,22 @@ namespace OdePackInteropTest
         {
             Console.WriteLine("Calling DLSODE...");
 
-            var y = new []
+            var solverParam = new SolverParams(
+                new ChordWithDiagonalJacobianSolver(3, SolutionMethod.Bdf),
+                new[]
+                {
+                    1.0,
+                    0.2,
+                    0.1
+                })
             {
-                1.0,
-                0.2,
-                0.1
+                StartTime = 0.0,
+                EndTime = 10.0,
             };
 
             unsafe
             {
-                var solverParam = new SolverParams(
-                    new ChordWithDiagonalJacobianSolver(3, SolutionMethod.Bdf),
-                    y,
-                    FImpl)
-                {
-                    StartTime = 0.0,
-                    EndTime = 10.0,
-                };
-
-                OdeSolver.Run(solverParam);
+                OdeSolver.Run(solverParam, FImpl);
             }
         }
     }

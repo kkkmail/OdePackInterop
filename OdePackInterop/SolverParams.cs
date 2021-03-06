@@ -14,17 +14,12 @@ namespace OdePackInterop
         public double[] InitialValues { get; }
         public double[] RelativeTolerance { get; init; }
         public double[] AbsoluteTolerance { get; init; }
-        public F F { get; }
-        public JAC? Jacobian { get; init; } = null;
-
         public SolverParams(
             SolverDescriptorBase solverDescriptor,
-            double[] initialValues,
-            F f)
+            double[] initialValues)
         {
             SolverDescriptor = solverDescriptor;
             InitialValues = initialValues;
-            F = f;
 
             RelativeTolerance =
                 Enumerable.Range(0, solverDescriptor.NumberOfEquations)

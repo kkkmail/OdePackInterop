@@ -17,7 +17,7 @@ namespace OdePackInterop
             ref int nrowpd) =>
             throw new NotSupportedException("Using Jacobian is not supported yet.");
 
-        public static void Run(SolverParams solverParams)
+        public static void Run(SolverParams solverParams, F f, JAC? jac = null)
         {
             var descriptor = solverParams.SolverDescriptor;
 
@@ -58,8 +58,7 @@ namespace OdePackInterop
 
             unsafe
             {
-                F f = solverParams.F;
-                JAC jac = solverParams.Jacobian ?? JacImpl;
+                jac ??= JacImpl;
 
                 // Pin everything so that GC won't move the things around...
                 fixed (double* _ = &y[0], __ = &rtol[0], ___ = &atol[0], ____ = &rwork[0])
