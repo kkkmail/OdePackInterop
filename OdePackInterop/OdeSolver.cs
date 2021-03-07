@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using OdePackInterop.Sets;
 using static OdePackInterop.Interop;
 
 namespace OdePackInterop
@@ -17,7 +18,7 @@ namespace OdePackInterop
             ref int nrowpd) =>
             throw new NotSupportedException("Using Jacobian is not supported yet.");
 
-        public static void Run(SolverParams solverParams, F f, JAC? jac = null)
+        public static SolverResult Run(SolverParams solverParams, F f, JAC? jac = null)
         {
             var descriptor = solverParams.SolverDescriptor;
 
@@ -45,10 +46,20 @@ namespace OdePackInterop
             var y = solverParams.InitialValues.Select(e => e).ToArray();
             var t = solverParams.StartTime;
             var tout = solverParams.EndTime;
+
+            // ATOL must be dimensioned at least NEQ.
             var itol = 2;
+
             var rtol = solverParams.RelativeTolerance.Select(e => e).ToArray();
             var atol = solverParams.AbsoluteTolerance.Select(e => e).ToArray();
+
+            // Flag indicating the task DLSODE is to perform.
+            // Use ITASK = 1 for normal computation of output values of y at t = TOUT.
+            // Nothing else is supported.
             var itask = 1;
+
+            // This is the first call for a problem.
+            // Subsequent calls (istate = 2) are not supported.
             var istate = 1;
 
             // Tell DLSODE that some optional parameters will be passed.
@@ -95,10 +106,19 @@ namespace OdePackInterop
                     }
                 }
 
-                var n = neq <= 1001 ? neq : 100;
-                Console.WriteLine($"At t = {t:N2}\n    Total = {y.Sum()}");
-                Console.WriteLine($"{string.Join("\n", y.Take(n).Select((e, i) => $"    y[{i}] = {e}"))}");
-                Console.WriteLine($"No. steps = {iwork[10]:N0}, No. f-s = {iwork[11]:N0}, No. J-s = {iwork[12]:N0}");
+                var solverResult = new SolverResult
+                {
+                    ResultState = ResultState.TryCreate(istate) ?? ResultState.GlobalFailure,
+                    T = t,
+                    X = y,
+                    Steps = iwork[10],
+                    FuncCalls = iwork[11],
+                    JacobianCalls = iwork[12],
+                    RequiredLRW = iwork[16],
+                    RequiredLIW = iwork[17],
+                };
+
+                return solverResult;
             }
         }
     }

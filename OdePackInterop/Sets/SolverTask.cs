@@ -9,6 +9,7 @@ namespace OdePackInterop.Sets
         }
 
         public static SolverTask NormalComputation { get; } = new(1);
+
         public static SolverTask TakeOneStepOnly { get; } = new(2);
         public static SolverTask StopAtEndTime { get; } = new(3);
         public static SolverTask NormalComputationWithoutOvershooting { get; } = new(4);

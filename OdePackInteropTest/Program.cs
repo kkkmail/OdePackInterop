@@ -13,7 +13,7 @@ namespace OdePackInteropTest
         const double fwdCoeff = 1.0;
         const double bkwCoeff = 0.1;
 
-        private const int NumberOfPairs = 50_000;
+        private const int NumberOfPairs = 1;
         private const int NumberOfEquations = 2 * NumberOfPairs + 1;
 
         static unsafe void FImpl(
@@ -29,6 +29,7 @@ namespace OdePackInteropTest
 
         /// <summary>
         /// kk:20210307
+        /// The tests below were run for NumberOfPairs = 50,000.
         /// If non-negativity is used then the results are as follows:
         ///     1. MF = 23.
         ///        Integral of motion: 10.0 -> 10.301689191032535 or OVER 3% discrepancy.
@@ -59,11 +60,11 @@ namespace OdePackInteropTest
         ///     4. MF = 10. The solver did not come back.
         ///
         /// neq = 2 * n + 1
-        /// y[0] --- y[1] + y[2]
-        /// y[2] --- y[3] + y[4]
-        /// y[4] --- y[5] + y[6]
+        /// y[0] ⇌ y[1] + y[2]
+        /// y[2] ⇌ y[3] + y[4]
+        /// y[4] ⇌ y[5] + y[6]
         /// ...
-        /// y[2 * n - 2] --- y[2 * n - 1] + y[2 * n]
+        /// y[2 * n - 2] ⇌ y[2 * n - 1] + y[2 * n]
         /// </summary>
         static unsafe void FImpl2(
             ref int neq,
@@ -92,7 +93,7 @@ namespace OdePackInteropTest
 
         private static long CallCount { get; set; }
 
-        static void FImpl(double[] y, double x, double[] dy, object obj)
+        static void FImpl(double[] y, double x, double[] dy, object _)
         {
             CallCount++;
 
@@ -103,15 +104,15 @@ namespace OdePackInteropTest
 
         private static DateTime Start { get; set; }
 
-        static void FImpl2(double[] y, double x, double[] dy, object obj)
+        static void FImpl2(double[] yInpt, double x, double[] dy, object obj)
         {
             CallCount++;
-            var neq = y.Length;
+            var neq = yInpt.Length;
 
             if (CallCount % 1_000_000 == 0) Console.WriteLine($"    t = {x}, CallCount = {CallCount}, run time = {DateTime.Now - Start}.");
 
-            // var y = new double[neq];
-            // for (var i = 0; i < neq; i++) y[i] = yInpt[i] > 0.0 ? yInpt[i] : 0.0;
+            var y = new double[neq];
+            for (var i = 0; i < neq; i++) y[i] = yInpt[i] > 0.0 ? yInpt[i] : 0.0;
 
             dy[0] = 2.0 * (-fwdCoeff * y[0] + bkwCoeff * y[1] * y[2]);
             dy[1] = fwdCoeff * y[0] - bkwCoeff * y[1] * y[2];
@@ -138,11 +139,7 @@ namespace OdePackInteropTest
             RunDLSODE(numberOfEquations, SolutionMethod.Adams, CorrectorIteratorMethod.ChordWithDiagonalJacobian);
             RunDLSODE(numberOfEquations, SolutionMethod.Bdf, CorrectorIteratorMethod.Functional);
             RunDLSODE(numberOfEquations, SolutionMethod.Adams, CorrectorIteratorMethod.Functional);
-
-            if (numberOfEquations <= 50)
-            {
-                RunAlgLib(numberOfEquations);
-            }
+            RunAlgLib(numberOfEquations);
         }
 
         static double[] GetInitialValues(int numberOfEquations) =>
@@ -184,20 +181,41 @@ namespace OdePackInteropTest
                 onChordWithBandedUserJacobian: throwNotSupported,
                 onChordWithBandedGeneratedJacobian: throwNotSupported);
 
+            SolverResult solverResult;
+
             var sw = new Stopwatch();
             sw.Start();
 
             unsafe
             {
-                OdeSolver.Run(solverParam, FImpl2);
+                solverResult = OdeSolver.Run(solverParam, FImpl2);
             }
 
             var elapsed = sw.Elapsed;
+            OutputResults(solverResult, elapsed);
+        }
+
+        private static void OutputResults(SolverResult solverResult, TimeSpan elapsed)
+        {
+            var n = solverResult.NumberOfEquations <= 1001 ? solverResult.NumberOfEquations : 100;
+            Console.WriteLine($"At t = {solverResult.T:N2}\n    Total = {solverResult.X.Sum()}");
+            Console.WriteLine($"{string.Join("\n", solverResult.X.Take(n).Select((e, i) => $"    y[{i}] = {e}"))}");
+
+            Console.WriteLine(
+                $"No. steps = {(solverResult.Steps > 0 ? $"{solverResult.Steps:N0}" : "<unknown>")}, " +
+                $"No. f-s = {solverResult.FuncCalls:N0}, No. J-s = {solverResult.JacobianCalls:N0}");
+
             Console.WriteLine($"Elapsed: {elapsed}\n\n");
         }
 
         static void RunAlgLib(int numberOfEquations)
         {
+            if (numberOfEquations > 51)
+            {
+                Console.WriteLine($"NOT calling OdeSolverSolve because the number of equations is too large: {numberOfEquations}.");
+                return;
+            }
+
             Console.WriteLine("Calling OdeSolverSolve.");
             Start = DateTime.Now;
             var stepSize = 0.0;
@@ -215,14 +233,21 @@ namespace OdePackInteropTest
             alglib.odesolversolve(s, FImpl2, null);
             alglib.odesolverresults(s, out var m, out var xTbl, out var yTbl, out var rep);
 
-            var y = Enumerable.Range(0, numberOfEquations).Select(i => yTbl[1, i]).ToArray();
-            var n = numberOfEquations <= 1001 ? numberOfEquations : 100;
-            Console.WriteLine($"At t = {xTbl[1]:N2}\n    Total = {y.Sum()}");
-            Console.WriteLine($"{string.Join("\n", y.Take(n).Select((e, i) => $"    y[{i}] = {e}"))}");
-            Console.WriteLine($"No. steps = <unknown>, No. f-s = {CallCount:N0}, No. J-s = {0}");
-
             var elapsed = sw.Elapsed;
-            Console.WriteLine($"Elapsed: {elapsed}\n\n");
+
+            var solverResult = new SolverResult
+            {
+                ResultState = ResultState.Success,
+                T = xTbl[1],
+                X = Enumerable.Range(0, numberOfEquations).Select(i => yTbl[1, i]).ToArray(),
+                Steps = -1,
+                FuncCalls = CallCount,
+                JacobianCalls = 0,
+                RequiredLRW = 0,
+                RequiredLIW = 0,
+            };
+
+            OutputResults(solverResult, elapsed);
         }
     }
 }
