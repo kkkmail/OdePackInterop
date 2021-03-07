@@ -6,6 +6,7 @@ using OdePackInterop.Sets;
 using OdePackInterop.SolverDescriptors;
 using static OdePackInterop.Interop;
 
+// ReSharper disable ArgumentsStyleNamedExpression
 namespace OdePackInteropTest
 {
     class Program
@@ -22,6 +23,16 @@ namespace OdePackInteropTest
             ydot[0] = -fwdCoeff * y[0] + bkwCoeff * y[1] * y[2];
             ydot[1] = fwdCoeff * y[0] - bkwCoeff * y[1] * y[2];
             ydot[2] = fwdCoeff * y[0] - bkwCoeff * y[1] * y[2];
+        }
+
+        private static long CallCount { get; set; }
+
+        static void FImpl(double[] y, double x, double[] dy, object obj)
+        {
+            CallCount++;
+            dy[0] = -fwdCoeff * y[0] + bkwCoeff * y[1] * y[2];
+            dy[1] = fwdCoeff * y[0] - bkwCoeff * y[1] * y[2];
+            dy[2] = fwdCoeff * y[0] - bkwCoeff * y[1] * y[2];
         }
 
         static unsafe void JacImpl(
@@ -110,31 +121,95 @@ namespace OdePackInteropTest
 
         static void Main(string[] args)
         {
+            //Console.WriteLine("Calling DLSODE...");
+
+            //var solverParam = new SolverParams(
+            //    // MF = 23, No. steps = 53, No. f-s = 75, No. J-s = 13, Elapsed: 00:00:00.0239851
+            //    new ChordWithDiagonalJacobianSolver(3, SolutionMethod.Bdf),
+
+            //    // MF = 13, No. steps = 494, No. f-s = 591, No. J-s = 37, Elapsed: 00:00:00.0236553
+            //    //new ChordWithDiagonalJacobianSolver(3, SolutionMethod.Adams),
+
+            //    // MF = 10, No. steps = 331076, No. f-s = 606038, No. J-s = 0, Elapsed: 00:00:00.0875339
+            //    //new FunctionalSolver(3, SolutionMethod.Adams),
+
+            //    // MF = 20, No. steps = 336412, No. f-s = 616700, No. J-s = 0, Elapsed: 00:00:00.0884548
+            //    //new FunctionalSolver(3, SolutionMethod.Bdf),
+
+            //    new[]
+            //    {
+            //        1.0,
+            //        0.2,
+            //        0.1
+            //    })
+            //{
+            //    StartTime = 0.0,
+            //    EndTime = 1.0e06,
+            //};
+
+            //var sw = new Stopwatch();
+            //sw.Start();
+
+            //unsafe
+            //{
+            //    OdeSolver.Run(solverParam, FImpl);
+            //}
+
+            //var elapsed = sw.Elapsed;
+            //Console.WriteLine($"Elapsed: {elapsed}");
+            //Console.ReadLine();
+
+            RunDLSODE(SolutionMethod.Bdf, CorrectorIteratorMethod.ChordWithDiagonalJacobian);
+            RunDLSODE(SolutionMethod.Adams, CorrectorIteratorMethod.ChordWithDiagonalJacobian);
+            RunDLSODE(SolutionMethod.Bdf, CorrectorIteratorMethod.Functional);
+            RunDLSODE(SolutionMethod.Adams, CorrectorIteratorMethod.Functional);
+            RunAlgLib();
+            Console.ReadLine();
+        }
+
+        static double[] GetInitialValues() =>
+            new[]
+            {
+                1.0,
+                0.2,
+                0.1
+            };
+
+        private static double StartTime = 0.0;
+        private static double EndTime =1.0e06;
+
+        static void RunDLSODE(SolutionMethod solutionMethod, CorrectorIteratorMethod iteratorMethod)
+        {
             Console.WriteLine("Calling DLSODE...");
 
-            var solverParam = new SolverParams(
-                // MF = 23, No. steps = 53, No. f-s = 75, No. J-s = 13, Elapsed: 00:00:00.0239851
-                //new ChordWithDiagonalJacobianSolver(3, SolutionMethod.Bdf),
-
-                //
-                new ChordWithDiagonalJacobianSolver(3, SolutionMethod.Adams),
-
-                // MF = 10, No. steps = 331076, No. f-s = 606038, No. J-s = 0, Elapsed: 00:00:00.0875339
-                //new FunctionalSolver(3, SolutionMethod.Adams),
-
-                // MF = 20, No. steps = 336412, No. f-s = 616700, No. J-s = 0, Elapsed: 00:00:00.0884548
-                //new FunctionalSolver(3, SolutionMethod.Bdf),
-
-                new[]
+            SolverParams getChordWithDiagonalJacobianSolver() =>
+                new SolverParams(
+                    new ChordWithDiagonalJacobianSolver(3, solutionMethod),
+                    GetInitialValues())
                 {
-                    1.0,
-                    0.2,
-                    0.1
-                })
-            {
-                StartTime = 0.0,
-                EndTime = 1.0e06,
-            };
+                    StartTime = StartTime,
+                    EndTime = EndTime,
+                };
+
+            SolverParams getFunctionalSolver() =>
+                new SolverParams(
+                    new FunctionalSolver(3, solutionMethod),
+                    GetInitialValues())
+                {
+                    StartTime = StartTime,
+                    EndTime = EndTime,
+                };
+
+            SolverParams throwNotSupported() =>
+                throw new NotSupportedException($"Iterator method: {iteratorMethod} is not supported.");
+
+            var solverParam = iteratorMethod.Switch(
+                onFunctional: getFunctionalSolver,
+                onChordWithUserJacobian: throwNotSupported,
+                onChordWithGeneratedJacobian: throwNotSupported,
+                onChordWithDiagonalJacobian: getChordWithDiagonalJacobianSolver,
+                onChordWithBandedUserJacobian: throwNotSupported,
+                onChordWithBandedGeneratedJacobian: throwNotSupported);
 
             var sw = new Stopwatch();
             sw.Start();
@@ -145,8 +220,31 @@ namespace OdePackInteropTest
             }
 
             var elapsed = sw.Elapsed;
-            Console.WriteLine($"Elapsed: {elapsed}");
-            Console.ReadLine();
+            Console.WriteLine($"Elapsed: {elapsed}\n\n");
+        }
+
+        static void RunAlgLib()
+        {
+            Console.WriteLine("Calling OdeSolverSolve.");
+            var stepSize = 0.0;
+
+            var x = new[]
+            {
+                StartTime,
+                EndTime,
+            };
+
+            alglib.odesolverrkck(GetInitialValues(), x, SolverParams.DefaultAbsoluteTolerance, stepSize, out var s);
+
+            var sw = new Stopwatch();
+            sw.Start();
+            alglib.odesolversolve(s, FImpl, null);
+            alglib.odesolverresults(s, out var m, out var xtbl, out var ytbl, out var rep);
+            Console.WriteLine($"At t = {xtbl[1]}, y[0] = {ytbl[1, 0]}, y[1] = {ytbl[1, 1]}, y[2] = {ytbl[1, 2]}");
+            Console.WriteLine($"No. steps = <unknown>, No. f-s = {CallCount}, No. J-s = {0}");
+
+            var elapsed = sw.Elapsed;
+            Console.WriteLine($"Elapsed: {elapsed}\n\n");
         }
     }
 }

@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="alglib.net" Version="3.17.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\OdePackInterop\OdePackInterop.csproj" />
   </ItemGroup>
 
