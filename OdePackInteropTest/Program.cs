@@ -13,7 +13,7 @@ namespace OdePackInteropTest
         const double fwdCoeff = 1.0;
         const double bkwCoeff = 0.1;
 
-        private const int NumberOfPairs = 1;
+        private const int NumberOfPairs = 50_000;
         private const int NumberOfEquations = 2 * NumberOfPairs + 1;
 
         static unsafe void FImpl(
