@@ -13,7 +13,7 @@ namespace OdePackInteropTest
         const double fwdCoeff = 1.0;
         const double bkwCoeff = 0.1;
 
-        private const int NumberOfPairs = 50000;
+        private const int NumberOfPairs = 50_000;
         private const int NumberOfEquations = 2 * NumberOfPairs + 1;
 
         static unsafe void FImpl(
@@ -28,6 +28,36 @@ namespace OdePackInteropTest
         }
 
         /// <summary>
+        /// kk:20210307
+        /// If non-negativity is used then the results are as follows:
+        ///     1. MF = 23.
+        ///        Integral of motion: 10.0 -> 10.301689191032535 or OVER 3% discrepancy.
+        ///        No. steps = 40,104, No. f-s = 132,533, No. J-s = 37,380
+        ///        Elapsed: 00:02:37.3532643
+        ///     2. MF = 13.
+        ///        Integral of motion: 10.0 -> 10.380914193130206 or OVER 3% discrepancy.
+        ///        No. steps = 39,955, No. f-s = 100,769, No. J-s = 20,207
+        ///        Elapsed: 00:01:49.2829071
+        ///     3. MF = 20.
+        ///        Integral of motion: 10.0 -> 9.999999999999996.
+        ///        No. steps = 49,067, No. f-s = 89,820, No. J-s = 0
+        ///        Elapsed: 00:01:42.9414014
+        ///     4. MF = 10
+        ///        Integral of motion: 10.0 -> 9.999999999999936.
+        ///        No. steps = 48,266, No. f-s = 87,707, No. J-s = 0
+        ///        Elapsed: 00:01:39.7107217
+        /// If non-negativity (replacement of yInpt by y) is turned off then the following happens:
+        ///     1. MF = 23.
+        ///        Integral of motion is nearly conserved: 10.0 -> 9.994361679959828
+        ///        No. steps = 18,176, No. f-s = 64,101, No. J-s = 20,098
+        ///        Elapsed: 00:00:46.7831109
+        ///     2. MF = 13.
+        ///        Integral of motion: 10.0 -> 9.98345003326132
+        ///        No. steps = 185,378, No. f-s = 649,958, No. J-s = 184,053
+        ///        Elapsed: 00:08:43.6774383
+        ///     3. MF = 20. The solver did not come back.
+        ///     4. MF = 10. The solver did not come back.
+        ///
         /// neq = 2 * n + 1
         /// y[0] --- y[1] + y[2]
         /// y[2] --- y[3] + y[4]
