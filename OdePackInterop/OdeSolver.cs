@@ -95,8 +95,10 @@ namespace OdePackInterop
                     }
                 }
 
-                Console.WriteLine($"At t = {t}, y[0] = {y[0]}, y[1] = {y[1]}, y[2] = {y[2]}");
-                Console.WriteLine($"No. steps = {iwork[10]}, No. f-s = {iwork[11]}, No. J-s = {iwork[12]}");
+                var n = neq <= 1001 ? neq : 100;
+                Console.WriteLine($"At t = {t:N2}\n    Total = {y.Sum()}");
+                Console.WriteLine($"{string.Join("\n", y.Take(n).Select((e, i) => $"    y[{i}] = {e}"))}");
+                Console.WriteLine($"No. steps = {iwork[10]:N0}, No. f-s = {iwork[11]:N0}, No. J-s = {iwork[12]:N0}");
             }
         }
     }

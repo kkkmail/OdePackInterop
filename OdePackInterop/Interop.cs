@@ -3,6 +3,8 @@
 namespace OdePackInterop
 {
     /// <summary>
+    /// FORTRAN source code: https://www.netlib.org/odepack/
+    ///
     /// https://www.codeproject.com/Articles/1099942/FORTRAN-Interoperability-with-NET-Exchanging-Compl
     /// http://xtechnotes.blogspot.com/2008/07/callback-to-c-from-unmanaged-fortran.html
     /// https://stackoverflow.com/questions/17549123/c-sharp-performance-using-unsafe-pointers-instead-of-intptr-and-marshal
