@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using OdePackInterop.Sets;
+using OdePackInterop.SolverDescriptors;
 using static OdePackInterop.Interop;
 
 namespace OdePackInterop
@@ -109,7 +110,8 @@ namespace OdePackInterop
                 var solverResult = new SolverResult
                 {
                     ResultState = ResultState.TryCreate(istate) ?? ResultState.GlobalFailure,
-                    T = t,
+                    StartTime = solverParams.StartTime,
+                    EndTime = t,
                     X = y,
                     Steps = iwork[10],
                     FuncCalls = iwork[11],
@@ -119,6 +121,40 @@ namespace OdePackInterop
                 };
 
                 return solverResult;
+            }
+        }
+
+        /// <summary>
+        /// F# workaround version due to:
+        ///     System.InvalidProgramException: Common Language Runtime detected an invalid program
+        ///     issue.
+        /// </summary>
+        public static T RunFSharp<T>(
+            Func<F> creator,
+            int solutionMethodKey,
+            double tStart,
+            double tEnd,
+            double[] initialValues,
+            Func<SolverResult, T> resultMapper)
+        {
+            unsafe
+            {
+                var f = creator();
+
+                var solutionMethod =
+                    SolutionMethod.TryCreate(solutionMethodKey)
+                    ?? throw new InvalidDataException($"Invalid key of solution method: {solutionMethodKey}");
+
+                var solverParams =
+                    new SolverParams(new FunctionalSolver(initialValues.Length, solutionMethod), initialValues)
+                    {
+                        StartTime = tStart,
+                        EndTime = tEnd,
+                    };
+
+                var result = Run(solverParams, f);
+                var output = resultMapper(result);
+                return output;
             }
         }
     }

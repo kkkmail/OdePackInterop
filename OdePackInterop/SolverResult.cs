@@ -6,7 +6,8 @@ namespace OdePackInterop
     public record SolverResult
     {
         public ResultState ResultState { get; init; } = ResultState.GlobalFailure;
-        public double T { get; init; }
+        public double StartTime { get; init; }
+        public double EndTime { get; init; }
         public double[] X { get; init; } = System.Array.Empty<double>();
         public int Steps { get; init; }
         public long FuncCalls { get; init; }
