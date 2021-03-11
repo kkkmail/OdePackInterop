@@ -21,14 +21,12 @@ The tests use a chemical-like system of equations based on a simple set of "reac
 
 …
 
-![formula](https://render.githubusercontent.com/render/math?math=y_2n-2%20\rightleftharpoons%20y_2n-1%20%2B%20y_2n)
+![formula](https://render.githubusercontent.com/render/math?math=y_{2n-2}%20\rightleftharpoons%20y_{2n-1}%20%2B%20y_{2n})
 
 
-y[0] \rightleftharpoons y[1] + y[2]
-y[2] ? y[3] + y[4]
-y[4] ? y[5] + y[6]
-...
-y[2 * n - 2] ? y[2 * n - 1] + y[2 * n]
+All forward coefficients ![formula](https://render.githubusercontent.com/render/math?math=k_f%20=%201.0) and backward are ![formula](https://render.githubusercontent.com/render/math?math=k_b%20=%200.1). The initial conditions set ![formula](https://render.githubusercontent.com/render/math?math=y_0%20=%200) and all other to zeros. The system then is solved from ![formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6).
+
+
 
 # References
 [ODEPACK FORTRAN Source Code](https://www.netlib.org/odepack/)
