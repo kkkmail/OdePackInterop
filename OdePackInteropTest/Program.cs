@@ -44,19 +44,19 @@ namespace OdePackInteropTest
         ///        Integral of motion: 10.0 -> 9.999999999999996.
         ///        No. steps = 49,067, No. f-s = 89,820, No. J-s = 0
         ///        Elapsed: 00:01:42.9414014
-        ///     4. MF = 10 (SolutionMethod.Adams, CorrectorIteratorMethod.Functional)
+        ///     4. MF = 10 (SolutionMethod.Adams, CorrectorIteratorMethod.Functional).
         ///        Integral of motion: 10.0 -> 9.999999999999936.
         ///        No. steps = 48,266, No. f-s = 87,707, No. J-s = 0
         ///        Elapsed: 00:01:39.7107217
         ///     5. AlgLib Cash-Carp method.
         ///        The solver did not come back.
-        /// If non-negativity (replacement of yInpt by y) is turned off then the following happens:
+        /// If non-negativity (replacement of yInpt by y) is turned off, then the following happens:
         ///     1. MF = 23.
-        ///        Integral of motion is nearly conserved: 10.0 -> 9.994361679959828
+        ///        Integral of motion is nearly conserved: 10.0 -> 9.994361679959828.
         ///        No. steps = 18,176, No. f-s = 64,101, No. J-s = 20,098
         ///        Elapsed: 00:00:46.7831109
         ///     2. MF = 13.
-        ///        Integral of motion: 10.0 -> 9.98345003326132
+        ///        Integral of motion: 10.0 -> 9.98345003326132.
         ///        No. steps = 185,378, No. f-s = 649,958, No. J-s = 184,053
         ///        Elapsed: 00:08:43.6774383
         ///     3. MF = 20.

@@ -10,7 +10,7 @@ Stiff chemical problems of this size pose several computational difficulties.
 
 This interop along with some 
 
-# Test results
+# Test setup
 The tests use a chemical-like system of equations based on a simple set of "reactions":
 
 ![formula](https://render.githubusercontent.com/render/math?math=y_0%20\rightleftharpoons%20y_1%20%2B%20y_2)
@@ -24,9 +24,71 @@ The tests use a chemical-like system of equations based on a simple set of "reac
 ![formula](https://render.githubusercontent.com/render/math?math=y_{2n-2}%20\rightleftharpoons%20y_{2n-1}%20%2B%20y_{2n})
 
 
-All forward coefficients ![formula](https://render.githubusercontent.com/render/math?math=k_f%20=%201.0) and backward are ![formula](https://render.githubusercontent.com/render/math?math=k_b%20=%200.1). The initial conditions set ![formula](https://render.githubusercontent.com/render/math?math=y_0%20=%200) and all other to zeros. The system then is solved from ![formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6).
+All forward and backward coefficients are the same:
 
+![formula](https://render.githubusercontent.com/render/math?math=k_f%20=%201.0)
 
+![formula](https://render.githubusercontent.com/render/math?math=k_b%20=%200.1).
+
+The initial conditions set
+
+![formula](https://render.githubusercontent.com/render/math?math=y_0%20=%2010)
+
+and all other to zeros. 
+
+The system then is solved from ![formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6).
+
+The system has an integral of motion: sum of all y must be constant.
+
+Five variants were tested under two different setups. The first setup treated all negative values of **_y_** as exact zeros when calculating the derivatives and the second one just used them as is without any corrections. Five tested variants were as follows:
+1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
+2. MF = 13 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
+3. MF = 20 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.Functional`).
+4. MF = 10 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.Functional`).
+5. AlgLib Cash-Carp method.
+The number of variables was **_100,001_** (**_n = 50,000_**). These variants were chosen as they were the only ones, which did not require time and memory expensive Jacobian calculations. Method `CorrectorIteratorMethod.ChordWithDiagonalJacobian` calculates diagonal Jacobian and this is only one extra call to the derivative function per step.
+
+# Test results
+If non-negativity is used (all negative values of y are treated as zeros when calculating
+the derivative) then the results are as follows:
+    1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
+       Integral of motion: 10.0 -> 10.301689191032535 or OVER 3% discrepancy.
+       No. steps = 40,104, No. f-s = 132,533, No. J-s = 37,380
+       Elapsed: 00:02:37.3532643
+    2. MF = 13 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
+       Integral of motion: 10.0 -> 10.380914193130206 or OVER 3% discrepancy.
+       No. steps = 39,955, No. f-s = 100,769, No. J-s = 20,207
+       Elapsed: 00:01:49.2829071
+    3. MF = 20 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.Functional`).
+       Integral of motion: 10.0 -> 9.999999999999996.
+       No. steps = 49,067, No. f-s = 89,820, No. J-s = 0
+       Elapsed: 00:01:42.9414014
+    4. MF = 10 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.Functional`).
+       Integral of motion: 10.0 -> 9.999999999999936.
+       No. steps = 48,266, No. f-s = 87,707, No. J-s = 0
+       Elapsed: 00:01:39.7107217
+    5. AlgLib Cash-Carp method.
+       The solver did not come back.
+
+If non-negativity (replacement of yInpt by y) is turned off, then the following happens:
+    1. MF = 23.
+       Integral of motion is nearly conserved: 10.0 -> 9.994361679959828
+       No. steps = 18,176, No. f-s = 64,101, No. J-s = 20,098
+       Elapsed: 00:00:46.7831109
+    2. MF = 13.
+       Integral of motion: 10.0 -> 9.98345003326132
+       No. steps = 185,378, No. f-s = 649,958, No. J-s = 184,053
+       Elapsed: 00:08:43.6774383
+    3. MF = 20.
+       The solver did not come back.
+    4. MF = 10.
+       The solver did not come back.
+    5. AlgLib Cash-Carp method.
+       The solver did not come back.
+
+This makes the following combinations as clear winners:
+1. Use non-negativity when calculating the derivative.
+2. Use `CorrectorIteratorMethod.Functional` and then user either`SolutionMethod.Bdf` or `SolutionMethod.Adams` 
 
 # References
 [ODEPACK FORTRAN Source Code](https://www.netlib.org/odepack/)
