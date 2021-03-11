@@ -34,9 +34,7 @@ The initial conditions set
 
 and all other to zeros. 
 
-The system then is solved from ![formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6).
-
-The system has an integral of motion: sum of all y must be constant.
+The system is solved from [formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6). The system has an integral of motion: sum of all y must be constant.
 
 Five variants were tested under two different setups. The first setup treated all negative values of **_y_** as exact zeros when calculating the derivatives and the second one just used them as is without any corrections. Five tested variants were as follows:
 1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
@@ -45,7 +43,7 @@ Five variants were tested under two different setups. The first setup treated al
 4. MF = 10 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.Functional`).
 5. AlgLib Cash-Carp method.
 
-The number of variables was **_100,001_** (**_n = 50,000_**). These variants were chosen as they were the only ones, which did not require time and memory expensive Jacobian calculations. All other combinations from DLSODE solver and all other solvers from ODEPACK do require a Jacobian and this was ruled out due to its size. Corrector iterator method `ChordWithDiagonalJacobian` calculates diagonal Jacobian and this is only one extra call to the derivative function per step.
+The number of variables was **_100,001_** (**_n = 50,000_**). These variants were chosen as they were the only ones, which did not require time and memory expensive Jacobian calculations. All other combinations from DLSODE solver and all other solvers from ODEPACK do require full or banded Jacobian in some form and this was ruled out due to its size. Corrector iterator method `ChordWithDiagonalJacobian` calculates diagonal Jacobian and this is only one extra call to the derivative function per step.
 
 # Test results
 If non-negativity is used (all negative values of **_y_** are treated as zeros when calculating
