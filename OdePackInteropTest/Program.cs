@@ -29,24 +29,27 @@ namespace OdePackInteropTest
 
         /// <summary>
         /// kk:20210307
-        /// The tests below were run for NumberOfPairs = 50,000.
-        /// If non-negativity is used then the results are as follows:
-        ///     1. MF = 23.
+        /// The tests below were run for NumberOfPairs = 50,000 (number of equations = 100,001).
+        /// If non-negativity is used (all negative values of y are treated as zeros when calculating
+        /// the derivative) then the results are as follows:
+        ///     1. MF = 23 (SolutionMethod.Bdf, CorrectorIteratorMethod.ChordWithDiagonalJacobian).
         ///        Integral of motion: 10.0 -> 10.301689191032535 or OVER 3% discrepancy.
         ///        No. steps = 40,104, No. f-s = 132,533, No. J-s = 37,380
         ///        Elapsed: 00:02:37.3532643
-        ///     2. MF = 13.
+        ///     2. MF = 13 (SolutionMethod.Adams, CorrectorIteratorMethod.ChordWithDiagonalJacobian).
         ///        Integral of motion: 10.0 -> 10.380914193130206 or OVER 3% discrepancy.
         ///        No. steps = 39,955, No. f-s = 100,769, No. J-s = 20,207
         ///        Elapsed: 00:01:49.2829071
-        ///     3. MF = 20.
+        ///     3. MF = 20 (SolutionMethod.Bdf, CorrectorIteratorMethod.Functional).
         ///        Integral of motion: 10.0 -> 9.999999999999996.
         ///        No. steps = 49,067, No. f-s = 89,820, No. J-s = 0
         ///        Elapsed: 00:01:42.9414014
-        ///     4. MF = 10
+        ///     4. MF = 10 (SolutionMethod.Adams, CorrectorIteratorMethod.Functional)
         ///        Integral of motion: 10.0 -> 9.999999999999936.
         ///        No. steps = 48,266, No. f-s = 87,707, No. J-s = 0
         ///        Elapsed: 00:01:39.7107217
+        ///     5. AlgLib Cash-Carp method.
+        ///        The solver did not come back.
         /// If non-negativity (replacement of yInpt by y) is turned off then the following happens:
         ///     1. MF = 23.
         ///        Integral of motion is nearly conserved: 10.0 -> 9.994361679959828
@@ -56,8 +59,12 @@ namespace OdePackInteropTest
         ///        Integral of motion: 10.0 -> 9.98345003326132
         ///        No. steps = 185,378, No. f-s = 649,958, No. J-s = 184,053
         ///        Elapsed: 00:08:43.6774383
-        ///     3. MF = 20. The solver did not come back.
-        ///     4. MF = 10. The solver did not come back.
+        ///     3. MF = 20.
+        ///        The solver did not come back.
+        ///     4. MF = 10.
+        ///        The solver did not come back.
+        ///     5. AlgLib Cash-Carp method.
+        ///        The solver did not come back.
         ///
         /// neq = 2 * n + 1
         /// y[0] ⇌ y[1] + y[2]
