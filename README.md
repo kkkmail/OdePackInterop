@@ -12,7 +12,18 @@ This interop along with some
 
 # Test results
 The tests use a chemical-like system of equations based on a simple set of "reactions":
-![formula](https://render.githubusercontent.com/render/math?math=y_0%20\rightleftharpoons%20y_0%20%2B%20y_2)
+
+![formula](https://render.githubusercontent.com/render/math?math=y_0%20\rightleftharpoons%20y_1%20%2B%20y_2)
+
+![formula](https://render.githubusercontent.com/render/math?math=y_2%20\rightleftharpoons%20y_3%20%2B%20y_4)
+
+![formula](https://render.githubusercontent.com/render/math?math=y_4%20\rightleftharpoons%20y_5%20%2B%20y_6)
+
+…
+
+![formula](https://render.githubusercontent.com/render/math?math=y_2n-2%20\rightleftharpoons%20y_2n-1%20%2B%20y_2n)
+
+
 y[0] \rightleftharpoons y[1] + y[2]
 y[2] ? y[3] + y[4]
 y[4] ? y[5] + y[6]
@@ -25,4 +36,4 @@ y[2 * n - 2] ? y[2 * n - 1] + y[2 * n]
 [Exporting subroutines from a FORTRAN DLL](https://community.intel.com/t5/Intel-Fortran-Compiler/Exporting-subroutines-from-a-Fortran-DLL/td-p/1129099)
 [FORTAN compiler issue due to usage of array and scalar variable interchangeably](https://community.intel.com/t5/Intel-Fortran-Compiler/error-6633-The-type-of-the-actual-argument-differs-from-the-type/td-p/1010721)
 [Comparison of ODE Solvers](http://www.stochasticlifestyle.com/wp-content/uploads/2019/11/de_solver_software_comparsion.pdf)
-[Discussion about positivity constraints in ODEs](https://mathematica.stackexchange.com/questions/45727/constraining-function-found-by-ndsolve-to-stay-p
+[Discussion about positivity constraints in ODEs](https://mathematica.stackexchange.com/questions/45727/constraining-function-found-by-ndsolve-to-stay-positive/)
