@@ -84,7 +84,7 @@ the derivative) then the results are as follows:
        The solver did not come back.
 ```
 
-If non-negativity (replacement of yInpt by y) is turned off, then the following happens:
+If non-negativity is turned off, then the following happens:
 
     1. MF = 23.
 ```
@@ -117,7 +117,7 @@ If non-negativity (replacement of yInpt by y) is turned off, then the following 
 ```
 
 This makes the following combinations as clear winners:
-1. Use non-negativity when calculating the derivative.
+1. Use non-negativity (treat all negative values as exact zeros) when calculating the derivative.
 2. Use `CorrectorIteratorMethod.Functional` and then user either`SolutionMethod.Bdf` or `SolutionMethod.Adams` 
 
 # References
