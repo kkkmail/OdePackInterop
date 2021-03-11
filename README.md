@@ -133,4 +133,4 @@ This makes the following combinations as clear winners:
 [Discussion about positivity constraints in ODEs](https://mathematica.stackexchange.com/questions/45727/constraining-function-found-by-ndsolve-to-stay-positive/)
 
 # Compiler and build
-(Intel FORTRAN compiler)[https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/fortran-compiler.html] was used to compile FORTRAN code. File `ODEPACK\dependencies.txt` contains dependencies of compiled DLL and folder `DLLs` contains some of them. Solution was tested only in `x64` mode.
+[Intel FORTRAN compiler](https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/fortran-compiler.html) was used to compile FORTRAN code. File `ODEPACK\dependencies.txt` contains dependencies of compiled DLL and folder `DLLs` contains some of them. Solution was tested only in `x64` mode.
