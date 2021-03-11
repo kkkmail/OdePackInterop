@@ -13,8 +13,8 @@ namespace OdePackInteropTest
         const double fwdCoeff = 1.0;
         const double bkwCoeff = 0.1;
 
-        private const int NumberOfPairs = 50_000;
-        private const int NumberOfEquations = 2 * NumberOfPairs + 1;
+        private static int NumberOfPairs { get; set; } = 50_000;
+        private static int NumberOfEquations => 2 * NumberOfPairs + 1;
 
         static unsafe void FImpl(
             ref int neq,
@@ -132,6 +132,16 @@ namespace OdePackInteropTest
 
         static void Main(string[] args)
         {
+            if (args.Length == 1)
+            {
+                if (int.TryParse(args[0], out var np))
+                {
+                    NumberOfPairs = np;
+                }
+            }
+
+            Console.WriteLine($"Using number of pairs: {NumberOfPairs}. Specify another number via command line parameter to override.");
+
             var numberOfEquations = NumberOfEquations;
             Console.WriteLine(
                 $"Number of equations: {numberOfEquations}, DefaultAbsoluteTolerance: {SolverParams.DefaultAbsoluteTolerance}.\n");
@@ -198,7 +208,7 @@ namespace OdePackInteropTest
         private static void OutputResults(SolverResult solverResult, TimeSpan elapsed)
         {
             var n = solverResult.NumberOfEquations <= 1001 ? solverResult.NumberOfEquations : 100;
-            Console.WriteLine($"At t = {solverResult.T:N2}\n    Total = {solverResult.X.Sum()}");
+            Console.WriteLine($"At t = {solverResult.EndTime:N2}\n    Total = {solverResult.X.Sum()}");
             Console.WriteLine($"{string.Join("\n", solverResult.X.Take(n).Select((e, i) => $"    y[{i}] = {e}"))}");
 
             Console.WriteLine(
@@ -238,7 +248,8 @@ namespace OdePackInteropTest
             var solverResult = new SolverResult
             {
                 ResultState = ResultState.Success,
-                T = xTbl[1],
+                StartTime = StartTime,
+                EndTime = xTbl[1],
                 X = Enumerable.Range(0, numberOfEquations).Select(i => yTbl[1, i]).ToArray(),
                 Steps = -1,
                 FuncCalls = CallCount,
