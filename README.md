@@ -45,10 +45,10 @@ Five variants were tested under two different setups. The first setup treated al
 4. MF = 10 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.Functional`).
 5. AlgLib Cash-Carp method.
 
-The number of variables was **_100,001_** (**_n = 50,000_**). These variants were chosen as they were the only ones, which did not require time and memory expensive Jacobian calculations. Method `CorrectorIteratorMethod.ChordWithDiagonalJacobian` calculates diagonal Jacobian and this is only one extra call to the derivative function per step.
+The number of variables was **_100,001_** (**_n = 50,000_**). These variants were chosen as they were the only ones, which did not require time and memory expensive Jacobian calculations. All other combinations from DLSODE solver and all other solvers from ODEPACK do require a Jacobian and this was ruled out due to its size. Corrector iterator method `ChordWithDiagonalJacobian` calculates diagonal Jacobian and this is only one extra call to the derivative function per step.
 
 # Test results
-If non-negativity is used (all negative values of y are treated as zeros when calculating
+If non-negativity is used (all negative values of **_y_** are treated as zeros when calculating
 the derivative) then the results are as follows:
 
     1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
