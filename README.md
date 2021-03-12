@@ -34,7 +34,7 @@ The initial conditions set
 
 and all other to zeros. 
 
-The system is solved from ![formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6). The system has an integral of motion: sum of all y must be constant.
+The system is solved from ![formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6). The system has an integral of motion: sum of all **_y_** must be constant.
 
 Five variants were tested under two different setups. The first setup treated all negative values of **_y_** as exact zeros when calculating the derivatives and the second one just used them as is without any corrections. Five tested variants were as follows:
 1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
@@ -47,7 +47,7 @@ The number of variables was **_100,001_** (**_n = 50,000_**). These variants wer
 
 # Test results
 If non-negativity is used (all negative values of **_y_** are treated as zeros when calculating
-the derivative) then the results are as follows:
+the derivative) then the results are as follows (`No. f-s` is the number of derivative evaluations and `No. J-s` is the number of Jacobian evaluations):
 
     1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
 ```
@@ -116,7 +116,7 @@ If non-negativity is turned off, then the following happens:
 
 This makes the following combinations as clear winners:
 1. Use non-negativity (treat all negative values as exact zeros) when calculating the derivative.
-2. Use `CorrectorIteratorMethod.Functional` and then user either`SolutionMethod.Bdf` or `SolutionMethod.Adams` 
+2. Use `CorrectorIteratorMethod.Functional` and then user either`SolutionMethod.Bdf` or `SolutionMethod.Adams`.
 
 # References
 [ODEPACK FORTRAN Source Code](https://www.netlib.org/odepack/)
