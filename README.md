@@ -26,7 +26,7 @@ All forward and backward coefficients are the same:
 
 ![formula](https://render.githubusercontent.com/render/math?math=k_f%20=%201.0)
 
-![formula](https://render.githubusercontent.com/render/math?math=k_b%20=%200.1).
+![formula](https://render.githubusercontent.com/render/math?math=k_b%20=%200.1)
 
 The initial conditions set
 
@@ -34,7 +34,7 @@ The initial conditions set
 
 and all other to zeros. 
 
-The system is solved from [formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6). The system has an integral of motion: sum of all y must be constant.
+The system is solved from ![formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6). The system has an integral of motion: sum of all y must be constant.
 
 Five variants were tested under two different setups. The first setup treated all negative values of **_y_** as exact zeros when calculating the derivatives and the second one just used them as is without any corrections. Five tested variants were as follows:
 1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
