@@ -16,17 +16,6 @@ namespace OdePackInteropTest
         private static int NumberOfPairs { get; set; } = 50_000;
         private static int NumberOfEquations => 2 * NumberOfPairs + 1;
 
-        static unsafe void FImpl(
-            ref int neq,
-            ref double t,
-            double* y,
-            double* dy)
-        {
-            dy[0] = 2.0 * (-fwdCoeff * y[0] + bkwCoeff * y[1] * y[2]);
-            dy[1] = fwdCoeff * y[0] - bkwCoeff * y[1] * y[2];
-            dy[2] = fwdCoeff * y[0] - bkwCoeff * y[1] * y[2];
-        }
-
         /// <summary>
         /// kk:20210307
         /// The tests below were run for NumberOfPairs = 50,000 (number of equations = 100,001).
@@ -99,15 +88,6 @@ namespace OdePackInteropTest
         }
 
         private static long CallCount { get; set; }
-
-        static void FImpl(double[] y, double x, double[] dy, object _)
-        {
-            CallCount++;
-
-            dy[0] = -fwdCoeff * y[0] + bkwCoeff * y[1] * y[2];
-            dy[1] = fwdCoeff * y[0] - bkwCoeff * y[1] * y[2];
-            dy[2] = fwdCoeff * y[0] - bkwCoeff * y[1] * y[2];
-        }
 
         private static DateTime Start { get; set; }
 

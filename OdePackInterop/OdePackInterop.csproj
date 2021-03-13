@@ -1,10 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Company />
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Konstantin K Konstantinov</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/kkkmail/OdePackInterop</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kkkmail/OdePackInterop</RepositoryUrl>
+    <Description>C# / F# NET5 interop with FORTRAN ODE Solver DLSODE aimed at solving very large systems of potentially stiff ODE (like chemical systems) where the number of variables is very large (on the order of 10^5 and more).</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
