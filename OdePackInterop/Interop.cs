@@ -5,6 +5,7 @@ namespace Softellect.OdePackInterop
     /// <summary>
     /// FORTRAN source code: https://www.netlib.org/odepack/
     ///
+    /// How to include 3rd party DLL into a Nuget package: https://dev.to/julianchu/c-including-3rd-dll-file-to-nuget-package-4idc
     /// https://www.codeproject.com/Articles/1099942/FORTRAN-Interoperability-with-NET-Exchanging-Compl
     /// http://xtechnotes.blogspot.com/2008/07/callback-to-c-from-unmanaged-fortran.html
     /// https://stackoverflow.com/questions/17549123/c-sharp-performance-using-unsafe-pointers-instead-of-intptr-and-marshal
