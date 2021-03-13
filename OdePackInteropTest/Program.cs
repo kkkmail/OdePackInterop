@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using OdePackInterop;
-using OdePackInterop.Sets;
-using OdePackInterop.SolverDescriptors;
+using Softellect.OdePackInterop;
+using Softellect.OdePackInterop.Sets;
+using Softellect.OdePackInterop.SolverDescriptors;
 
 // ReSharper disable ArgumentsStyleNamedExpression
 namespace OdePackInteropTest

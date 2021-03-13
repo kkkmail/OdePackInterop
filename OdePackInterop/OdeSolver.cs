@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using OdePackInterop.Sets;
-using OdePackInterop.SolverDescriptors;
-using static OdePackInterop.Interop;
+using Softellect.OdePackInterop.Sets;
+using Softellect.OdePackInterop.SolverDescriptors;
+using static Softellect.OdePackInterop.Interop;
 
-namespace OdePackInterop
+namespace Softellect.OdePackInterop
 {
     public static class OdeSolver
     {

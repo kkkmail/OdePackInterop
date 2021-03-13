@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 
-namespace OdePackInterop.Sets
+namespace Softellect.OdePackInterop.Sets
 {
     public abstract record ClosedDualSetBase<T, TK, TV> : ClosedSetBase<T, TV>
         where T : ClosedDualSetBase<T, TK, TV>

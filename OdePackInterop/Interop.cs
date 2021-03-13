@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace OdePackInterop
+namespace Softellect.OdePackInterop
 {
     /// <summary>
     /// FORTRAN source code: https://www.netlib.org/odepack/

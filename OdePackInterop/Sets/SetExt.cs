@@ -1,9 +1,8 @@
 ﻿using System;
-using System.IO;
-using static OdePackInterop.Sets.SolutionMethod;
-using static OdePackInterop.Sets.CorrectorIteratorMethod;
+using static Softellect.OdePackInterop.Sets.SolutionMethod;
+using static Softellect.OdePackInterop.Sets.CorrectorIteratorMethod;
 
-namespace OdePackInterop.Sets
+namespace Softellect.OdePackInterop.Sets
 {
     public static class SetExt
     {
