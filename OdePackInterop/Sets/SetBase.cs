@@ -4,7 +4,7 @@ using System.IO;
 
 #nullable enable
 
-namespace OdePackInterop.Sets
+namespace Softellect.OdePackInterop.Sets
 {
     public abstract record SetBase<T, TV> : IComparable<T>, IEquatable<T>
         where T : SetBase<T, TV>

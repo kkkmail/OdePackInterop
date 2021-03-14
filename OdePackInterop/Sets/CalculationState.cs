@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace OdePackInterop.Sets
+namespace Softellect.OdePackInterop.Sets
 {
     public record CalculationState : ClosedDualSetBase<CalculationState, int, string>
     {

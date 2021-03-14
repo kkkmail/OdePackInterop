@@ -1,6 +1,6 @@
-﻿using OdePackInterop.Sets;
+﻿using Softellect.OdePackInterop.Sets;
 
-namespace OdePackInterop.SolverDescriptors
+namespace Softellect.OdePackInterop.SolverDescriptors
 {
     public abstract record SolverDescriptorBase
     {

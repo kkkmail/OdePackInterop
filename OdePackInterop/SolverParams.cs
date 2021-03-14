@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using OdePackInterop.SolverDescriptors;
+using Softellect.OdePackInterop.SolverDescriptors;
 
-namespace OdePackInterop
+namespace Softellect.OdePackInterop
 {
     public record SolverParams
     {

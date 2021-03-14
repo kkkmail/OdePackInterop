@@ -1,8 +1,8 @@
-﻿using OdePackInterop.Sets;
+﻿using Softellect.OdePackInterop.Sets;
 
 // ReSharper disable ArgumentsStyleAnonymousFunction
 // ReSharper disable InconsistentNaming
-namespace OdePackInterop.SolverDescriptors
+namespace Softellect.OdePackInterop.SolverDescriptors
 {
     public record ChordWithBandedUserJacobianSolver : SolverDescriptorBase
     {

@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using OdePackInterop.Sets;
-using OdePackInterop.SolverDescriptors;
-using static OdePackInterop.Interop;
+using Softellect.OdePackInterop.Sets;
+using Softellect.OdePackInterop.SolverDescriptors;
+using static Softellect.OdePackInterop.Interop;
+// ReSharper disable ArgumentsStyleNamedExpression
 
-namespace OdePackInterop
+namespace Softellect.OdePackInterop
 {
     public static class OdeSolver
     {
@@ -132,10 +134,11 @@ namespace OdePackInterop
         public static T RunFSharp<T>(
             Func<F> creator,
             int solutionMethodKey,
+            int correctorIteratorMethodKey,
             double tStart,
             double tEnd,
             double[] initialValues,
-            Func<SolverResult, T> resultMapper)
+            Func<SolverResult, TimeSpan, T> resultMapper)
         {
             unsafe
             {
@@ -145,15 +148,40 @@ namespace OdePackInterop
                     SolutionMethod.TryCreate(solutionMethodKey)
                     ?? throw new InvalidDataException($"Invalid key of solution method: {solutionMethodKey}");
 
-                var solverParams =
-                    new SolverParams(new FunctionalSolver(initialValues.Length, solutionMethod), initialValues)
+                var iteratorMethod =
+                    CorrectorIteratorMethod.TryCreate(correctorIteratorMethodKey)
+                    ?? throw new InvalidDataException($"Invalid key of corrector iterator method: {correctorIteratorMethodKey}");
+
+                SolverParams getChordWithDiagonalJacobianSolver() =>
+                    new(new ChordWithDiagonalJacobianSolver(initialValues.Length, solutionMethod), initialValues)
                     {
                         StartTime = tStart,
                         EndTime = tEnd,
                     };
 
+                SolverParams getFunctionalSolver() =>
+                    new(new FunctionalSolver(initialValues.Length, solutionMethod), initialValues)
+                    {
+                        StartTime = tStart,
+                        EndTime = tEnd,
+                    };
+
+                SolverParams throwNotSupported() =>
+                    throw new NotSupportedException($"Iterator method: {iteratorMethod} is not supported.");
+
+                var solverParams = iteratorMethod.Switch(
+                    onFunctional: getFunctionalSolver,
+                    onChordWithUserJacobian: throwNotSupported,
+                    onChordWithGeneratedJacobian: throwNotSupported,
+                    onChordWithDiagonalJacobian: getChordWithDiagonalJacobianSolver,
+                    onChordWithBandedUserJacobian: throwNotSupported,
+                    onChordWithBandedGeneratedJacobian: throwNotSupported);
+
+                var sw = new Stopwatch();
+                sw.Start();
+
                 var result = Run(solverParams, f);
-                var output = resultMapper(result);
+                var output = resultMapper(result, sw.Elapsed);
                 return output;
             }
         }

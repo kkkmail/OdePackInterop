@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 
-namespace OdePackInterop.Sets
+namespace Softellect.OdePackInterop.Sets
 {
     public abstract record ClosedSetBase<T, TV> : SetBase<T, TV>
         where T : ClosedSetBase<T, TV>

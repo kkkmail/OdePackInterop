@@ -1,7 +1,7 @@
-﻿using OdePackInterop.Sets;
+﻿using Softellect.OdePackInterop.Sets;
 
 // ReSharper disable InconsistentNaming
-namespace OdePackInterop
+namespace Softellect.OdePackInterop
 {
     public record SolverResult
     {
