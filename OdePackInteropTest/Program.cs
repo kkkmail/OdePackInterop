@@ -17,6 +17,11 @@ namespace OdePackInteropTest
         private static int NumberOfEquations => 2 * NumberOfPairs + 1;
 
         /// <summary>
+        /// If true, then treats all negative values of y as zeros.
+        /// </summary>
+        private static bool MakeNonNegative { get; set; } = true;
+
+        /// <summary>
         /// kk:20210307
         /// The tests below were run for NumberOfPairs = 50,000 (number of equations = 100,001).
         /// If non-negativity is used (all negative values of y are treated as zeros when calculating
@@ -69,7 +74,7 @@ namespace OdePackInteropTest
             double* dy)
         {
             var y = new double[neq];
-            for (var i = 0; i < neq; i++) y[i] = yInpt[i] > 0.0 ? yInpt[i] : 0.0;
+            for (var i = 0; i < neq; i++) y[i] = yInpt[i] > 0.0 || !MakeNonNegative ? yInpt[i] : 0.0;
 
             dy[0] = 2.0 * (-fwdCoeff * y[0] + bkwCoeff * y[1] * y[2]);
             dy[1] = fwdCoeff * y[0] - bkwCoeff * y[1] * y[2];
@@ -119,15 +124,58 @@ namespace OdePackInteropTest
 
         static void Main(string[] args)
         {
-            if (args.Length == 1)
+            void usage(bool invalid = true) =>
+                Console.WriteLine(
+                    (invalid ? "Invalid command line parameters.\n" : "") +
+                    "Allowed command line parameters are:\n" +
+                    $"    Zero command line parameters - default values of the number of pairs: {NumberOfPairs} " +
+                    $"and make non-negative: {MakeNonNegative} will be used.\n" +
+                    $"    One command line parameter - specify an integer value for the number of pairs.\n" +
+                    $"    Two command line parameters - specify an integer value for the number of pairs " +
+                    $"and an integer: 0 (false) or 1 (true) for make non-negative parameter.");
+
+            bool setNumberOfPairs()
             {
-                if (int.TryParse(args[0], out var np))
+                if (!int.TryParse(args[0], out var p))
                 {
-                    NumberOfPairs = np;
+                    usage();
+                    return false;
                 }
+
+                NumberOfPairs = p;
+                return true;
             }
 
-            Console.WriteLine($"Using number of pairs: {NumberOfPairs}. Specify another number via command line parameter to override.");
+            bool setMakeNonNegative()
+            {
+                if (!int.TryParse(args[1], out var p))
+                {
+                    usage();
+                    return false;
+                }
+
+                MakeNonNegative = p != 0;
+                return true;
+            }
+
+            switch (args.Length)
+            {
+                case > 2:
+                    usage();
+                    return;
+                case 2:
+                    if (!setNumberOfPairs()) return;
+                    if (!setMakeNonNegative()) return;
+                    break;
+                case 1:
+                    if (!setNumberOfPairs()) return;
+                    break;
+                default:
+                    usage(false);
+                    break;
+            }
+
+            Console.WriteLine($"Using number of pairs: {NumberOfPairs}, make non-negative: {MakeNonNegative}.");
 
             var numberOfEquations = NumberOfEquations;
             Console.WriteLine(
