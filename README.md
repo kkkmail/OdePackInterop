@@ -1,12 +1,16 @@
 # OdePackInterop
-This is a simple C# / F# NET5 interop with [FORTRAN ODE Solver DLSODE](https://computing.llnl.gov/projects/odepack) aimed at solving very large systems of potentially stiff ODE (like chemical systems) where the number of variables is ![formula](https://render.githubusercontent.com/render/math?math=\sim%2010^5). 
+This is a simple C# / F# NET5 interop with [FORTRAN ODE Solver DLSODE](https://computing.llnl.gov/projects/odepack) aimed at solving very large systems of potentially stiff ODEs (like in chemical systems) where the number of variables is ![formula](https://render.githubusercontent.com/render/math?math=\sim%2010^5) or more. 
 
-An alternative could be to use [SUNDIALS](https://computing.llnl.gov/projects/sundials), which is a newer C port of various FORTRAN solvers. However, since SUNDIALS is written in C, an attempt to create a NET5 interop results in **_C++/CLI E0337 "Linkage specification is incompatible"_** error, which is [a known issue but without a publicly available solution](https://developercommunity.visualstudio.com/t/ccli-e0337-linkage-specification-is-incompatible/919335) as of March 11, 2021.
+An alternative could be to use [SUNDIALS](https://computing.llnl.gov/projects/sundials), which is a newer C port of various FORTRAN solvers. However, since SUNDIALS is written in C, an attempt to create a NET5 interop results in **_C++/CLI E0337 "Linkage specification is incompatible"_** error, which is [a known issue but without a publicly available solution](https://developercommunity.visualstudio.com/t/ccli-e0337-linkage-specification-is-incompatible/919335) as of March 14, 2021.
 
-Stiff chemical problems of this size pose several computational difficulties.
+Stiff chemical problems of this size pose several computational difficulties:
 1. To handle stiffness, forward methods often decrease the step to a very small value. This results in extremely large solution time. Basically, the solver just never comes back. This _seems_ to happen when some of the variables start to approach zero. The solver then overshoots zero, stiffness kicks in, and that, in turn, makes solver algorithm decrease the step to a very small value.
 2. Backward methods require either inverting very large matrices or using full or banded Jacobian. That results in ![formula](https://render.githubusercontent.com/render/math?math=\sim%20N^2) memory increase and ![formula](https://render.githubusercontent.com/render/math?math=\sim%20N^3) number of operations increase as the number of equations ![formula](https://render.githubusercontent.com/render/math?math=N) increases.
 3. Chemical systems often have an integral of motion: the "matter" is conserved in some way and this is usually written that some linear combination of variables must stay constant. Some solvers may break such integral of motion thus rendering the results questionable. Symplectic integrators cannot be used to remedy the situation as they are designed to handle completely different tasks.
+
+The purpose of this interop is to reuse existing ODE solvers, which are in public domain, while attempting to make that extremely large systems of ODEs can be solved in a reasonable time and with a reasonable precision.
+
+The interop includes a performance test for a large chemical-like system of ODEs. Both C# and F# versions of the test are included. F# posed an additional challenge most likely due to the absence of `unsafe` context.
 
 # Test setup
 The tests used a chemical-like system of equations based on a simple set of "reactions":
@@ -42,7 +46,7 @@ Five variants were tested under two different setups. The first setup treated al
 2. MF = 13 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
 3. MF = 20 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.Functional`).
 4. MF = 10 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.Functional`).
-5. AlgLib Cash-Carp method.
+5. AlgLib Cash-Carp method (not implemented in F#).
 
 These variants were chosen as they were the only ones, which did not require time and memory expensive Jacobian calculations. All other combinations from DLSODE solver and all other solvers from ODEPACK do require full or banded Jacobian in some form and this was ruled out due to its size. Corrector iterator method `ChordWithDiagonalJacobian` calculates diagonal Jacobian and this is only one extra call to the derivative function per step.
 
