@@ -49,49 +49,49 @@ The number of variables was **_100,001_** (**_n = 50,000_**). These variants wer
 If non-negativity is used (all negative values of **_y_** are treated as zeros when calculating
 the derivative) then the results are as follows (`No. f-s` is the number of derivative evaluations and `No. J-s` is the number of Jacobian evaluations):
 
-    1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
+1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
 ```
        Integral of motion: 10.0 -> 10.301689191032535 or OVER 3% discrepancy.
        No. steps = 40,104, No. f-s = 132,533, No. J-s = 37,380
        Elapsed: 00:02:37.3532643
 ```
 
-    2. MF = 13 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
+2. MF = 13 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
 ```
        Integral of motion: 10.0 -> 10.380914193130206 or OVER 3% discrepancy.
        No. steps = 39,955, No. f-s = 100,769, No. J-s = 20,207
        Elapsed: 00:01:49.2829071
 ```
 
-    3. MF = 20 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.Functional`).
+3. MF = 20 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.Functional`).
 ```
        Integral of motion: 10.0 -> 9.999999999999996.
        No. steps = 49,067, No. f-s = 89,820, No. J-s = 0
        Elapsed: 00:01:42.9414014
 ```
 
-    4. MF = 10 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.Functional`).
+4. MF = 10 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.Functional`).
 ```
        Integral of motion: 10.0 -> 9.999999999999936.
        No. steps = 48,266, No. f-s = 87,707, No. J-s = 0
        Elapsed: 00:01:39.7107217
 ```
 
-    5. AlgLib Cash-Carp method.
+5. AlgLib `Cash-Carp` method.
 ```
        The solver did not come back.
 ```
 
 If non-negativity is turned off, then the following happens:
 
-    1. MF = 23.
+1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
 ```
        Integral of motion is nearly conserved: 10.0 -> 9.994361679959828
        No. steps = 18,176, No. f-s = 64,101, No. J-s = 20,098
        Elapsed: 00:00:46.7831109
 ```
 
-    2. MF = 13.
+2. MF = 13 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
 ```
 
        Integral of motion: 10.0 -> 9.98345003326132
@@ -99,24 +99,24 @@ If non-negativity is turned off, then the following happens:
        Elapsed: 00:08:43.6774383
 ```
 
-    3. MF = 20.
+3. MF = 20 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.Functional`).
 ```
        The solver did not come back.
 ```
 
-    4. MF = 10.
+4. MF = 10 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.Functional`).
 ```
        The solver did not come back.
 ```
 
-    5. AlgLib Cash-Carp method.
+5. AlgLib `Cash-Carp` method.
 ```
        The solver did not come back.
 ```
 
 This makes the following combinations as clear winners:
-1. Use non-negativity (treat all negative values as exact zeros) when calculating the derivative.
-2. Use `CorrectorIteratorMethod.Functional` and then user either`SolutionMethod.Bdf` or `SolutionMethod.Adams`.
+1. Do not use non-negativity (treat the variables exactly as they are), then use `SolutionMethod.Bdf` and `CorrectorIteratorMethod.ChordWithDiagonalJacobian`. This seems to be the fastest method with the least number of derivative function evaluations. It was at least twice faster in the test, but, the integral of motion started to deviate from the expected value and this may or may not have a significant impact for real tasks.
+2. Use non-negativity (treat all negative values as exact zeros) when calculating the derivative, use `CorrectorIteratorMethod.Functional`, and the user either `SolutionMethod. Adams` (seems to slightly faster) or `SolutionMethod.Bdf`. The integral of motion is conserved with a very high precision but the calculation was at least twice slower, and the number of derivative function evaluation was about 50% larger. This may change for real tasks.
 
 # References
 [ODEPACK FORTRAN Source Code](https://www.netlib.org/odepack/)
