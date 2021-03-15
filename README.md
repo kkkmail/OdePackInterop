@@ -115,7 +115,7 @@ If non-negativity is turned off, then the following happens:
 ```
 
 This makes the following combinations as clear winners:
-1. Do not use non-negativity (treat the variables exactly as they are), then use `SolutionMethod.Bdf` and `CorrectorIteratorMethod.ChordWithDiagonalJacobian`. This seems to be the fastest method with the least number of derivative function evaluations. It was at least twice faster in the test, but, the integral of motion started to deviate from the expected value and this may or may not have a significant impact for real tasks.
+1. Do not use non-negativity (treat the variables exactly as they are), then use `SolutionMethod.Bdf` and `CorrectorIteratorMethod.ChordWithDiagonalJacobian`. This seems to be the fastest method with the least number of derivative function evaluations. It was at least twice faster in the test, but the integral of motion started to deviate from the expected value and this may or may not have a significant impact for real tasks.
 2. Use non-negativity (treat all negative values as exact zeros) when calculating the derivative, use `CorrectorIteratorMethod.Functional`, and the user either `SolutionMethod. Adams` (seems to slightly faster) or `SolutionMethod.Bdf`. The integral of motion is conserved with a very high precision but the calculation was at least twice slower, and the number of derivative function evaluation was about 50% larger. This may change for real tasks.
 
 # References
