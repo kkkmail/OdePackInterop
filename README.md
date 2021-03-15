@@ -1,5 +1,5 @@
 # OdePackInterop
-This is a simple C# NET5 interop with [FORTRAN ODE Solver DLSODE](https://computing.llnl.gov/projects/odepack) aimed at solving very large systems of potentially stiff ODE (like chemical systems) where the number of variables is ![formula](https://render.githubusercontent.com/render/math?math=\sim%2010^5). 
+This is a simple C# / F# NET5 interop with [FORTRAN ODE Solver DLSODE](https://computing.llnl.gov/projects/odepack) aimed at solving very large systems of potentially stiff ODE (like chemical systems) where the number of variables is ![formula](https://render.githubusercontent.com/render/math?math=\sim%2010^5). 
 
 An alternative could be to use [SUNDIALS](https://computing.llnl.gov/projects/sundials), which is a newer C port of various FORTRAN solvers. However, since SUNDIALS is written in C, an attempt to create a NET5 interop results in **_C++/CLI E0337 "Linkage specification is incompatible"_** error, which is [a known issue but without a publicly available solution](https://developercommunity.visualstudio.com/t/ccli-e0337-linkage-specification-is-incompatible/919335) as of March 11, 2021.
 
@@ -9,7 +9,7 @@ Stiff chemical problems of this size pose several computational difficulties.
 3. Chemical systems often have an integral of motion: the "matter" is conserved in some way and this is usually written that some linear combination of variables must stay constant. Some solvers may break such integral of motion thus rendering the results questionable. Symplectic integrators cannot be used to remedy the situation as they are designed to handle completely different tasks.
 
 # Test setup
-The tests use a chemical-like system of equations based on a simple set of "reactions":
+The tests used a chemical-like system of equations based on a simple set of "reactions":
 
 ![formula](https://render.githubusercontent.com/render/math?math=y_0%20\rightleftharpoons%20y_1%20%2B%20y_2)
 
@@ -37,7 +37,7 @@ and all other to zeros.
 
 The system was solved from ![formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6). The system has an integral of motion: sum of all **_y_** must be constant.
 
-Five variants were tested under two different setups. The first setup treated all negative values of **_y_** as exact zeros when calculating the derivatives and the second one just used them as is without any corrections. Five tested variants were as follows:
+Five variants were tested under two different setups. The first setup treated all negative values of **_y_** as exact zeros when calculating the derivatives and the second one just used them as is without any corrections. The tested variants were as follows:
 1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
 2. MF = 13 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
 3. MF = 20 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.Functional`).
@@ -78,7 +78,7 @@ the derivative) then the results are as follows (`No. f-s` is the number of deri
        Elapsed: 00:01:39.7107217
 ```
 
-5. AlgLib `Cash-Carp` method.
+5. AlgLib Cash-Carp method.
 ```
        The solver did not come back.
 ```
@@ -110,7 +110,7 @@ When non-negativity was turned off, then the following happened:
        The solver did not come back.
 ```
 
-5. AlgLib `Cash-Carp` method.
+5. AlgLib Cash-Carp method.
 ```
        The solver did not come back.
 ```
