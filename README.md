@@ -21,8 +21,9 @@ The tests use a chemical-like system of equations based on a simple set of "reac
 
 ![formula](https://render.githubusercontent.com/render/math?math=y_{2n-2}%20\rightleftharpoons%20y_{2n-1}%20%2B%20y_{2n})
 
+The number of variables was **_100,001_** (**_n = 50,000_**).
 
-All forward and backward coefficients are the same:
+All forward and backward coefficients were the same:
 
 ![formula](https://render.githubusercontent.com/render/math?math=k_f%20=%201.0)
 
@@ -34,7 +35,7 @@ The initial conditions set
 
 and all other to zeros. 
 
-The system is solved from ![formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6). The system has an integral of motion: sum of all **_y_** must be constant.
+The system was solved from ![formula](https://render.githubusercontent.com/render/math?math=t%20=%200) to ![formula](https://render.githubusercontent.com/render/math?math=t%20=%2010^6). The system has an integral of motion: sum of all **_y_** must be constant.
 
 Five variants were tested under two different setups. The first setup treated all negative values of **_y_** as exact zeros when calculating the derivatives and the second one just used them as is without any corrections. Five tested variants were as follows:
 1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
@@ -43,10 +44,10 @@ Five variants were tested under two different setups. The first setup treated al
 4. MF = 10 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.Functional`).
 5. AlgLib Cash-Carp method.
 
-The number of variables was **_100,001_** (**_n = 50,000_**). These variants were chosen as they were the only ones, which did not require time and memory expensive Jacobian calculations. All other combinations from DLSODE solver and all other solvers from ODEPACK do require full or banded Jacobian in some form and this was ruled out due to its size. Corrector iterator method `ChordWithDiagonalJacobian` calculates diagonal Jacobian and this is only one extra call to the derivative function per step.
+These variants were chosen as they were the only ones, which did not require time and memory expensive Jacobian calculations. All other combinations from DLSODE solver and all other solvers from ODEPACK do require full or banded Jacobian in some form and this was ruled out due to its size. Corrector iterator method `ChordWithDiagonalJacobian` calculates diagonal Jacobian and this is only one extra call to the derivative function per step.
 
 # Test results
-If non-negativity is used (all negative values of **_y_** are treated as zeros when calculating
+When non-negativity was used (all negative values of **_y_** were treated as zeros when calculating
 the derivative) then the results are as follows (`No. f-s` is the number of derivative evaluations and `No. J-s` is the number of Jacobian evaluations):
 
 1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
@@ -82,7 +83,7 @@ the derivative) then the results are as follows (`No. f-s` is the number of deri
        The solver did not come back.
 ```
 
-If non-negativity is turned off, then the following happens:
+When non-negativity was turned off, then the following happened:
 
 1. MF = 23 (`SolutionMethod.Bdf`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
 ```
@@ -94,7 +95,7 @@ If non-negativity is turned off, then the following happens:
 2. MF = 13 (`SolutionMethod.Adams`, `CorrectorIteratorMethod.ChordWithDiagonalJacobian`).
 ```
 
-       Integral of motion: 10.0 -> 9.98345003326132
+       Integral of motion has nearly 2% discrepancy: 10.0 -> 9.98345003326132
        No. steps = 185,378, No. f-s = 649,958, No. J-s = 184,053
        Elapsed: 00:08:43.6774383
 ```
