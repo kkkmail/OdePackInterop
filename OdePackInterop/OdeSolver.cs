@@ -5,8 +5,9 @@ using System.Linq;
 using Softellect.OdePackInterop.Sets;
 using Softellect.OdePackInterop.SolverDescriptors;
 using static Softellect.OdePackInterop.Interop;
-// ReSharper disable ArgumentsStyleNamedExpression
 
+// ReSharper disable ArgumentsStyleNamedExpression
+// ReSharper disable MemberCanBePrivate.Global
 namespace Softellect.OdePackInterop
 {
     public static class OdeSolver
@@ -138,7 +139,9 @@ namespace Softellect.OdePackInterop
             double tStart,
             double tEnd,
             double[] initialValues,
-            Func<SolverResult, TimeSpan, T> resultMapper)
+            Func<SolverResult, TimeSpan, T> resultMapper,
+            double[] absoluteTolerance,
+            double[] relativeTolerance)
         {
             unsafe
             {
@@ -153,14 +156,22 @@ namespace Softellect.OdePackInterop
                     ?? throw new InvalidDataException($"Invalid key of corrector iterator method: {correctorIteratorMethodKey}");
 
                 SolverParams getChordWithDiagonalJacobianSolver() =>
-                    new(new ChordWithDiagonalJacobianSolver(initialValues.Length, solutionMethod), initialValues)
+                    new(
+                        new ChordWithDiagonalJacobianSolver(initialValues.Length, solutionMethod),
+                        initialValues,
+                        absoluteTolerance,
+                        relativeTolerance)
                     {
                         StartTime = tStart,
                         EndTime = tEnd,
                     };
 
                 SolverParams getFunctionalSolver() =>
-                    new(new FunctionalSolver(initialValues.Length, solutionMethod), initialValues)
+                    new(
+                        new FunctionalSolver(initialValues.Length, solutionMethod),
+                        initialValues,
+                        absoluteTolerance,
+                        relativeTolerance)
                     {
                         StartTime = tStart,
                         EndTime = tEnd,
@@ -185,5 +196,29 @@ namespace Softellect.OdePackInterop
                 return output;
             }
         }
+
+        public static T RunFSharp<T>(
+            Func<F> creator,
+            int solutionMethodKey,
+            int correctorIteratorMethodKey,
+            double tStart,
+            double tEnd,
+            double[] initialValues,
+            Func<SolverResult, TimeSpan, T> resultMapper,
+            double absoluteTolerance = SolverParams.DefaultAbsoluteTolerance,
+            double relativeTolerance = 0.0 * SolverParams.DefaultRelativeTolerance) =>
+            RunFSharp(creator,
+                solutionMethodKey,
+                correctorIteratorMethodKey,
+                tStart,
+                tEnd,
+                initialValues,
+                resultMapper,
+                Enumerable.Range(0, initialValues.Length)
+                    .Select(_ => absoluteTolerance)
+                    .ToArray(),
+                Enumerable.Range(0, initialValues.Length)
+                    .Select(_ => relativeTolerance)
+                    .ToArray());
     }
 }
