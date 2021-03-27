@@ -1,35 +1,47 @@
 ﻿using System.Linq;
 using Softellect.OdePackInterop.SolverDescriptors;
 
+// ReSharper disable IntroduceOptionalParameters.Global
+// ReSharper disable MemberCanBePrivate.Global
 namespace Softellect.OdePackInterop
 {
     public record SolverParams
     {
-        public static double DefaultRelativeTolerance = 1.0e-05;
-        public static double DefaultAbsoluteTolerance = 1.0e-07;
+        public const double DefaultRelativeTolerance = 1.0e-05;
+        public const double DefaultAbsoluteTolerance = 1.0e-07;
         public SolverDescriptorBase SolverDescriptor { get; }
         public double StartTime { get; init; }
         public double EndTime { get; init; }
         public double[] InitialValues { get; }
-        public double[] RelativeTolerance { get; init; }
-        public double[] AbsoluteTolerance { get; init; }
+        public double[] RelativeTolerance { get; }
+        public double[] AbsoluteTolerance { get; }
 
         public SolverParams(
             SolverDescriptorBase solverDescriptor,
-            double[] initialValues)
+            double[] initialValues,
+            double[] absoluteTolerance,
+            double[] relativeTolerance)
         {
             SolverDescriptor = solverDescriptor;
             InitialValues = initialValues;
+            AbsoluteTolerance = absoluteTolerance;
+            RelativeTolerance = relativeTolerance;
+        }
 
-            RelativeTolerance =
+        public SolverParams(
+            SolverDescriptorBase solverDescriptor,
+            double[] initialValues,
+            double absoluteTolerance = DefaultAbsoluteTolerance,
+            double relativeTolerance = 0.0 * DefaultRelativeTolerance) :
+            this(solverDescriptor,
+                initialValues,
                 Enumerable.Range(0, solverDescriptor.NumberOfEquations)
-                    .Select(_ => 0.0 * DefaultRelativeTolerance)
-                    .ToArray();
-
-            AbsoluteTolerance =
+                    .Select(_ => absoluteTolerance)
+                    .ToArray(),
                 Enumerable.Range(0, solverDescriptor.NumberOfEquations)
-                    .Select(_ => DefaultAbsoluteTolerance)
-                    .ToArray();
+                    .Select(_ => relativeTolerance)
+                    .ToArray())
+        {
         }
     }
 }
