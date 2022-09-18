@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Platforms>AnyCPU;x64</Platforms>
+    <TargetFramework>net6.0</TargetFramework>
+    <Platforms>x64</Platforms>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Company />
@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/kkkmail/OdePackInterop</RepositoryUrl>
     <Description>C# / F# NET5 interop with FORTRAN ODE Solver DLSODE (https://computing.llnl.gov/projects/odepack, https://www.netlib.org/odepack/) aimed at solving very large systems of potentially stiff ODEs (like chemical systems) where the number of variables is very large (on the order of 10^5 and more).</Description>
     <PackageId>Softellect.OdePackInterop</PackageId>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <AssemblyName>Softellect.OdePackInterop</AssemblyName>
     <RootNamespace>Softellect.OdePackInterop</RootNamespace>
     <PackageReleaseNotes>Added methods to specify tolerance parameters.</PackageReleaseNotes>
