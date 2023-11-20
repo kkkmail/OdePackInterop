@@ -1,5 +1,5 @@
 # OdePackInterop
-This is a simple C# / F# NET5 interop with [FORTRAN ODE Solver DLSODE](https://computing.llnl.gov/projects/odepack) aimed at solving very large systems of potentially stiff ODEs (like in chemical systems) where the number of variables is ![formula](https://render.githubusercontent.com/render/math?math=\sim%2010^5) or more. 
+This is a simple C# / F# NET8 interop with [FORTRAN ODE Solver DLSODE](https://computing.llnl.gov/projects/odepack) aimed at solving very large systems of potentially stiff ODEs (like in chemical systems) where the number of variables is ![formula](https://render.githubusercontent.com/render/math?math=\sim%2010^5) or more. 
 
 An alternative could be to use [SUNDIALS](https://computing.llnl.gov/projects/sundials), which is a newer C port of various FORTRAN solvers. However, since SUNDIALS is written in C, an attempt to create a NET5 interop results in **_C++/CLI E0337 "Linkage specification is incompatible"_** error, which is [a known issue but without a publicly available solution](https://developercommunity.visualstudio.com/t/ccli-e0337-linkage-specification-is-incompatible/919335) as of March 14, 2021.
 
