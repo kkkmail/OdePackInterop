@@ -38,7 +38,7 @@
 			<Tool Name="VFPostBuildEventTool"/>
 			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
-		<Configuration Name="Release|x64" UseCompiler="ifortCompiler" ConfigurationType="typeDynamicLibrary">
+		<Configuration Name="Release|x64" UseCompiler="ifxCompiler" ConfigurationType="typeDynamicLibrary">
 			<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" RuntimeLibrary="rtMultiThreadedDLL"/>
 			<Tool Name="VFLinkerTool" SuppressStartupBanner="true" SubSystem="subSystemWindows" LinkDLL="true"/>
 			<Tool Name="VFResourceCompilerTool"/>
