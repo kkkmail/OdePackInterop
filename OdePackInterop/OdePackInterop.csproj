@@ -1,57 +1,61 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Platforms>x64</Platforms>
-    <Nullable>enable</Nullable>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Company />
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Konstantin K Konstantinov</Authors>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/kkkmail/OdePackInterop</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/kkkmail/OdePackInterop</RepositoryUrl>
-    <Description>C# / F# NET8 interop with FORTRAN ODE Solver DLSODE (https://computing.llnl.gov/projects/odepack, https://www.netlib.org/odepack/) aimed at solving very large systems of potentially stiff ODEs (like chemical systems) where the number of variables is very large (on the order of 10^5 and more).</Description>
-    <PackageId>Softellect.OdePackInterop</PackageId>
-    <Version>8.0.400.1</Version>
-    <AssemblyName>Softellect.OdePackInterop</AssemblyName>
-    <RootNamespace>Softellect.OdePackInterop</RootNamespace>
-    <PackageReleaseNotes>Added methods to specify tolerance parameters.</PackageReleaseNotes>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Platforms>x64</Platforms>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Company />
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Konstantin K Konstantinov</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/kkkmail/OdePackInterop</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/kkkmail/OdePackInterop</RepositoryUrl>
+        <Description>C# / F# NET8 interop with FORTRAN ODE Solver DLSODE (https://computing.llnl.gov/projects/odepack, https://www.netlib.org/odepack/) aimed at solving very large systems of potentially stiff ODEs (like chemical systems) where the number of variables is very large (on the order of 10^5 and more).</Description>
+        <PackageId>Softellect.OdePackInterop</PackageId>
+        <Version>8.0.400.2</Version>
+        <AssemblyName>Softellect.OdePackInterop</AssemblyName>
+        <RootNamespace>Softellect.OdePackInterop</RootNamespace>
+        <PackageReleaseNotes>Added methods to specify tolerance parameters.</PackageReleaseNotes>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NoWarn>1701;1702;NU5100</NoWarn>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <NoWarn>1701;1702;NU5100</NoWarn>
+    </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(ProjectDir)..\ODEPACK\x64\Release\OdePack.dll&quot; &quot;$(TargetDir)&quot;" />
-  </Target>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="copy &quot;$(ProjectDir)..\ODEPACK\x64\Release\OdePack.dll&quot; &quot;$(TargetDir)&quot;" />
+    </Target>
 
-  <ItemGroup>
-    <None Include="..\DLLs\libifcoremd.dll" Link="libifcoremd.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackageCopyToOutput>true</PackageCopyToOutput>
-    </None>
-    <None Include="..\DLLs\libmmd.dll" Link="libmmd.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackageCopyToOutput>true</PackageCopyToOutput>
-    </None>
-    <None Include="..\DLLs\vcruntime140.dll" Link="vcruntime140.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackageCopyToOutput>true</PackageCopyToOutput>
-    </None>
-    <None Include="..\ODEPACK\x64\Release\OdePack.dll" Link="OdePack.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackageCopyToOutput>true</PackageCopyToOutput>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="..\DLLs\libifcoremd.dll" Link="libifcoremd.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </None>
+        <None Include="..\DLLs\libmmd.dll" Link="libmmd.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </None>
+        <None Include="..\DLLs\vcruntime140.dll" Link="vcruntime140.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </None>
+        <None Include="..\ODEPACK\x64\Release\OdePack.dll" Link="OdePack.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </None>
+        <None Include="..\README.md" Link="README.md" Pack="true" PackagePath="\">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
 </Project>
