@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <Platforms>x64</Platforms>
-        <LangVersion>13</LangVersion>
+        <LangVersion>14</LangVersion>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Company />
@@ -12,10 +12,10 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/kkkmail/OdePackInterop</PackageProjectUrl>
         <RepositoryUrl>https://github.com/kkkmail/OdePackInterop</RepositoryUrl>
-        <Description>C# / F# NET9 interop with FORTRAN ODE Solver DLSODE (https://computing.llnl.gov/projects/odepack, https://www.netlib.org/odepack/) aimed at solving very large systems of potentially stiff ODEs (like chemical systems) where the number of variables is very large (on the order of 10^5 and more).</Description>
+        <Description>C# / F# NET10 interop with FORTRAN ODE Solver DLSODE (https://computing.llnl.gov/projects/odepack, https://www.netlib.org/odepack/) aimed at solving very large systems of potentially stiff ODEs (like chemical systems) where the number of variables is very large (on the order of 10^5 and more).</Description>
         <PackageId>Softellect.OdePackInterop</PackageId>
-        <Version>9.0.303.28</Version>
-        <PackageVersion>9.0.303.28</PackageVersion>
+        <Version>10.0.100.29</Version>
+        <PackageVersion>10.0.100.29</PackageVersion>
         <AssemblyName>Softellect.OdePackInterop</AssemblyName>
         <RootNamespace>Softellect.OdePackInterop</RootNamespace>
         <PackageReleaseNotes>Added methods to specify tolerance parameters.</PackageReleaseNotes>
