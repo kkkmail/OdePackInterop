@@ -1,0 +1,238 @@
+C
+C  IPROB = 1 : KEPLER PROBLEM, ECCENTRICITY IN RPAR(1)
+C  IPROB = 2 : HARMONIC OSCILLATOR
+C  IPROB = 3 : PENDULUM
+C  IPROB = 4 : OUTER SOLAR SYSTEM
+C
+      SUBROUTINE PDATA(X,XEND,NDIM,N,Q,P,QEX,PEX,RPAR,IPAR)
+      IMPLICIT REAL*8 (A-H,O-Z)
+      DIMENSION Q(NDIM),P(NDIM),QEX(NDIM),PEX(NDIM)
+      DIMENSION IPAR(*),RPAR(*)
+      IPROB=IPAR(11)
+      IF (IPROB.EQ.1) THEN
+        N=2
+        PI=4*ATAN(1.D0)
+        ECCENT=RPAR(11)
+        X=0.D0
+        XEND=2*PI
+        Q(1)=1-ECCENT
+        Q(2)=0.d0
+        P(1)=0.d0
+        P(2)=SQRT((1+ECCENT)/(1-ECCENT))
+        QEX(1)=1-ECCENT
+        QEX(2)=0.d0
+        PEX(1)=0.d0
+        PEX(2)=SQRT((1+ECCENT)/(1-ECCENT))
+      END IF
+      IF (IPROB.EQ.2) THEN
+        N=1
+        PI=4*ATAN(1.D0)
+        X=0.D0
+        XEND=2*PI
+        Q(1)=0.0D0
+        P(1)=1.0D0
+        QEX(1)=0.0D0
+        PEX(1)=1.0D0
+      END IF
+      IF (IPROB.EQ.3) THEN
+        N=1
+        PI=4*ATAN(1.D0)
+        X=0.D0
+        XEND=2*PI
+        Q(1)=0.0D0
+        P(1)=1.0D0
+        QEX(1)=-0.443944662290259D0
+        PEX(1)= 0.897846803312944D0
+      END IF
+      IF (IPROB.EQ.4) THEN
+        N=18
+        X=0.D0
+        XEND=500000.D0
+        Q(1)=-3.5023653D0
+	Q(2)=-3.8169847D0
+	Q(3)=-1.5507963D0
+	Q(4)=9.0755314D0
+	Q(5)=-3.0458353D0
+	Q(6)=-1.6483708D0
+	Q(7)=8.3101420D0
+	Q(8)=-16.2901086D0
+	Q(9)=-7.2521278D0
+	Q(10)=11.4707666D0
+	Q(11)=-25.7294829D0
+	Q(12)=-10.8169456D0
+	Q(13)=-15.5387357D0
+	Q(14)=-25.2225594D0
+	Q(15)=-3.1902382D0
+	Q(16)=0.0D0
+	Q(17)=0.0D0
+	Q(18)=0.0D0
+	P(1)=0.00565429D0
+	P(2)=-0.00412490D0
+	P(3)=-0.00190589D0
+	P(4)=0.00168318D0
+	P(5)=0.00483525D0
+	P(6)=0.00192462D0
+	P(7)=0.00354178D0
+	P(8)=0.00137102D0
+	P(9)=0.00055029D0
+	P(10)=0.00288930D0
+	P(11)=0.00114527D0
+	P(12)=0.00039677D0
+	P(13)=0.00276725D0
+	P(14)=-0.00170702D0
+	P(15)=-0.00136504D0
+	P(16)=0.0D0
+	P(17)=0.0D0
+	P(18)=0.0D0
+        QEX( 1)=   0.7766584086800482D+01
+        QEX( 2)=   0.2531065754551048D+00
+        QEX( 3)=  -0.9410571402013185D-01
+        QEX( 4)=  -0.5564967162844037D+01
+        QEX( 5)=   0.1674849740822012D+01
+        QEX( 6)=   0.9767232069533176D+00
+        QEX( 7)=   0.1963899572895227D+02
+        QEX( 8)=   0.8958504552286460D+01
+        QEX( 9)=   0.3611839157057347D+01
+        QEX(10)=   0.2493570870305177D+02
+        QEX(11)=   0.1769518676153705D+02
+        QEX(12)=   0.6583785164549242D+01
+        QEX(13)=   0.3178592511375764D+02
+        QEX(14)=   0.3863618958160644D+02
+        QEX(15)=   0.3192794169732889D+01
+        QEX(16)=   0.3084118473380683D+01
+        QEX(17)=  -0.1227726356581642D+01
+        QEX(18)=  -0.6162537634647217D+00
+        PEX( 1)=  -0.2495503201917009D-02
+        PEX( 2)=   0.6896467194473328D-02
+        PEX( 3)=   0.3007950247474123D-02
+        PEX( 4)=  -0.2255335935351989D-02
+        PEX( 5)=  -0.4905913854771086D-02
+        PEX( 6)=  -0.1938473641716708D-02
+        PEX( 7)=  -0.2186170231167942D-02
+        PEX( 8)=   0.2817177012110666D-02
+        PEX( 9)=   0.1262882639181183D-02
+        PEX(10)=  -0.2148728705895163D-02
+        PEX(11)=   0.2128650077635786D-02
+        PEX(12)=   0.9248501411662923D-03
+        PEX(13)=  -0.1675173186229401D-02
+        PEX(14)=   0.1011833320388655D-02
+        PEX(15)=   0.8231800038576520D-03
+        PEX(16)=   0.9417379703028725D-05
+        PEX(17)=  -0.7855256238249194D-05
+        PEX(18)=  -0.3646926313230521D-05
+      END IF
+      RETURN
+      END
+c
+      SUBROUTINE EQUA(N,X,Q,F,RPAR,IPAR)
+      IMPLICIT REAL*8 (A-H,O-Z) 
+      DOUBLE PRECISION  D(6,6),K,M(6)
+      DIMENSION Q(N),F(N)
+      DIMENSION IPAR(*),RPAR(*)
+      IPROB=IPAR(11)
+      IPAR(12)=IPAR(12)+1
+      IF (IPROB.EQ.1) THEN
+        RAD=Q(1)*Q(1)+Q(2)*Q(2)
+        RAD=RAD*SQRT(RAD)
+        F(1)=-Q(1)/RAD
+        F(2)=-Q(2)/RAD
+      END IF
+      IF (IPROB.EQ.2) THEN
+        F(1)=-Q(1)
+      END IF
+      IF (IPROB.EQ.3) THEN
+        F(1)=-SIN(Q(1))
+      END IF
+      IF (IPROB.EQ.4) THEN
+        K=2.95912208286D-4
+	M(1)=0.000954786104043D0
+	M(2)=0.000285583733151D0
+	M(3)=0.0000437273164546D0
+	M(4)=0.0000517759138449D0
+	M(5)=1.0D0/1.3D8
+	M(6)=1.00000597682D0
+
+        DO I=1,5
+	  I1=3*(I-1)+1
+	  DO J=I+1,6
+	    J1=3*(J-1)+1
+	    D(I,J)=(SQRT((Q(I1)-Q(J1))**2+(Q(I1+1)-Q(J1+1))**2+
+     *		    (Q(I1+2)-Q(J1+2))**2))**3
+	    D(J,I)=D(I,J)
+	  END DO
+	END DO
+
+	DO I=1,6
+	  I1=3*(I-1)+1
+	  F(I1)=0.0D0
+	  F(I1+1)=0.0D0
+	  F(I1+2)=0.0D0
+	  DO J=1,6
+            IF (J.NE.I) THEN
+	      J1=3*(J-1)+1
+	      F(I1)=F(I1)+M(J)*(Q(J1)-Q(I1))/D(I,J)
+	      F(I1+1)=F(I1+1)+M(J)*(Q(J1+1)-Q(I1+1))/D(I,J)
+	      F(I1+2)=F(I1+2)+M(J)*(Q(J1+2)-Q(I1+2))/D(I,J)
+            END IF
+	  END DO
+	  F(I1)=K*F(I1)
+	  F(I1+1)=K*F(I1+1)
+	  F(I1+2)=K*F(I1+2)
+	END DO
+      END IF
+      RETURN
+      END 
+c
+      SUBROUTINE HAMILTON (N,X,Q,P,HAMIL,RPAR,IPAR)
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z) 
+      DOUBLE PRECISION  D(6,6),K,M(6),Q(N),P(N),Y(100)
+      DIMENSION IPAR(*),RPAR(*)
+      IPROB=IPAR(11)
+      IF (IPROB.EQ.1) THEN
+        HAMIL=0.5d0*(P(1)**2+P(2)**2)-1/SQRT(Q(1)**2+Q(2)**2)
+      END IF
+      IF (IPROB.EQ.2) THEN
+        HAMIL=0.5d0*(P(1)**2+Q(1)**2)
+      END IF
+      IF (IPROB.EQ.3) THEN
+        HAMIL=0.5d0*P(1)**2-COS(Q(1))
+      END IF
+      IF (IPROB.EQ.4) THEN
+        DO I=1,N
+           Y(I)=Q(I)
+           Y(I+N)=P(I)
+        END DO
+	K=2.95912208286D-4
+	M(1)=0.000954786104043D0
+	M(2)=0.000285583733151D0
+	M(3)=0.0000437273164546D0
+	M(4)=0.0000517759138449D0
+	M(5)=1.0D0/1.3D8
+	M(6)=1.00000597682D0
+
+	DO I=1,5
+	  I1=3*(I-1)+1
+	  DO J=I+1,6
+	    J1=3*(J-1)+1
+	    D(I,J)=SQRT((Y(I1)-Y(J1))**2+(Y(I1+1)-Y(J1+1))**2+
+     *		    (Y(I1+2)-Y(J1+2))**2)
+	    D(J,I)=D(I,J)
+	  END DO
+	END DO
+
+        HAMIL=0.0D0
+        DO I=1,6
+	   I1=N+3*(I-1)+1
+           HAMIL=HAMIL+M(I)*(Y(I1)**2+Y(I1+1)**2+Y(I1+2)**2)
+        END DO
+        HAMIL=HAMIL/2.0D0
+        POT=0.0D0
+        DO I=2,6
+           DO J=1,I-1
+              POT=POT+M(I)*M(J)/D(I,J)
+           END DO
+        END DO
+        HAMIL=HAMIL-K*POT
+      END IF
+      RETURN
+      END 

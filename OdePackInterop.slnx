@@ -1,0 +1,16 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="ODEPACK/OdePack.vfproj" Type="6989167d-11e4-40fe-8c1a-2192a86a7e90" Id="687325a7-e417-4ecf-a43a-be1ac15cc6f5" />
+  <Project Path="OdePackInterop/OdePackInterop.csproj">
+    <BuildDependency Project="ODEPACK/OdePack.vfproj" />
+    <Platform Project="x64" />
+  </Project>
+  <Project Path="OdePackInteropFSharpTest/OdePackInteropFSharpTest.fsproj">
+    <Platform Project="x64" />
+  </Project>
+  <Project Path="OdePackInteropTest/OdePackInteropTest.csproj">
+    <Platform Project="x64" />
+  </Project>
+</Solution>
